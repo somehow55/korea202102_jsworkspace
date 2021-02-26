@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /* 문서의 ID를 선택자로 사용할 경우 #을 붙인다. ex. #navi, #content */
+        #navi{
+            background-color: salmon; 
+            height: 150px;
+            padding-left: 100px; /*왼쪽 박스 경계로부터 100px x축방향으로 증가시킴 */
+
+        }
+        #content{
+            background-color: pink;
+            height: 600px;
+            text-align: center; /* 태그 요소 내에 있는 즉 박스내에 있는 컨텐츠 가운데로 정렬!
+                패딩으로만 하면 브라우저를 옮기면 방향이 바뀌기 때문에 노노 */
+        }
+        
+        body{
+            margin:0px;
+
+        }
+
+
+    </style>
+
+</head>
+<body>
+    <!-- div란? '분할'의 의미로, 하나의 문서 내의 구역을 설정할 때 사용됨. -->
+    <div id="navi">메인 메뉴</div>
+    <div id="content">사이트 내용</div>
+
+
+    <!-- 텍스트가 포지션의 대상이 되려면 적어도 태그로, 즉 마크업이 돼있어야 한다.
+    다른 태그들은 적으면 효과가 생기니 그나마 span으로 하는 것. -->
+
+    
+</body>
+</html>

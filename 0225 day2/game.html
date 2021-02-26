@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mario World</title>
+    <style>
+/* 누구를(selector) 어떻게{} */
+body{
+    background-image: url(../images/bg.jpg);
+    background-repeat: no-repeat;
+    /* 패턴화 되는 것 = 리핏되는 것을 방지하기 위해 */
+    background-size: 1280px 580px;
+}
+/*   밖으로 한 번 나가서=..   상위 폴더 = /폴더명/   */
+/* html 문서 내에 있는 모든 컨텐츠는 반드시 마크업해야 원하는 디자인 효과를 낼 수 있다. 다라서 주인공의 위치를 원하는 곳에 두려면, html상 원래 불가능하다. */
+/* 하지만, css를 이용해, 이 한계를 극복할 수 있다.
+이 예제에서는 스타일 시트의 위치 지정 속성을 배운다. */
+
+.mario{
+    width:100px;
+    position: absolute; /*절대 위치*/
+    left: 200px; /* x축의 값을 200px만큼*/
+    top: 320px; /*y축의 값을 100px만큼*/
+}
+/* 클래스명을 여기다 명시하기! .mario라고 */
+
+.enemy{
+    width:50px;
+    position:absolute;
+    left: 600px;
+    top: 380px;
+}
+
+    </style>
+</head>
+<body>
+    <img src="../images/mario.png" class="mario">
+    <!-- 클래스명 여기다 명시  -->
+
+    <img src="../images/enemy.png" class="enemy"
+
+    
+</body>
+</html>

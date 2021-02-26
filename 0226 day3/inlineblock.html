@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>복합구조의 레이아웃</title>
+    <style>
+        #navi{
+            background-color: yellow;
+            width: 700px;
+            height: 100px;
+
+        }
+
+        #side{
+            background-color: green;
+            width: 100px;
+            height: 550px;
+            /* 그 아무도 수평공간에 허용하지 않는 block 속성을 버리게 하는 방법
+            = inline으로 지정해주기!
+            = display 로 inline 인지, block인지 설정해주기!*/
+            /* 이 상황에서 inline만 하면 텍스트크기만큼만 남기 때문에, 하이브리드인
+            inline-block으로 해준다. 둘의 특성을 다 가짐. */
+            display: inline-block;
+        }
+
+        #content{
+            background-color: blue;
+            width:600px;
+            height:550px;
+            left:100px;
+            top:100px;
+            position: absolute;
+            display: inline-block;
+
+            
+        }
+        #s{
+            background: red;
+            position:absolute;
+            left: 0px;
+            top: 10px;
+        }
+        #s2{
+            background: dodgerblue;
+            position:absolute;
+            left: 10px;
+            top: 20px;
+        }
+        #box{
+            background: hotpink;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+    <!-- 모든 태그는 박스모델로 간주되며 속성은 크게 block형과 inline형으로 나뉨
+    block:나와같은 수평공간에 어떤 누구도 허용하지 않음
+            block은 크기를 지정할 수 있다. (width, height 지정 가능)
+
+    inline: 다른 태그 요소들과 수평 공간에 공존할 수 있다.
+            inline은 크기를 지정할 수 없다. (내부 컨텐츠만큼만 늘어남) -->
+
+
+    <!-- 왜 모든 태그는 왼쪽 상단으로 향할까?
+    >>> 왼쪽 상단을 기준으로 했기 때문에.
+            여기서 알 수 있는 것 : 모든 태그는 개발자가 포지션을 지정하지 않아도,
+        이미 왼쪽 상단기준으로 한 포지션이 디폴트로 설정되어있다.  -->
+
+<!-- 
+    <span id="s">나는 span</span>
+    <span id="s2">나는 span2</span>
+    <div id="box">나는 div</div>
+     -->
+
+    <!-- span VS div
+    span은 그 글자까지만 적용되고, div는 그 줄 다 적용된다 -->
+
+
+
+    <div id="navi">사이트명</div>
+    <div id="side">사이드 영역</div>
+    <div id="content">컨텐트 영역</div>
+
+
+</body>
+</html>
