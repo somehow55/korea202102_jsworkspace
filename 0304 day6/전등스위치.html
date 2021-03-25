@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWITCH ON/OFF</title>
+    <style>
+        #wrapper{
+            background: url(../images/room.jpg);
+            width:1000px;
+            height:562px;
+            background-size: 900px 600px;
+            margin:auto;
+            position:relative;
+        }
+        #wrapper img{
+            width:80px;
+            position: absolute;     /* surface가 스위치 밑으로 내려가버려서 넣는 것 */
+            left:0px;
+            top:0px;
+        }
+        #surface{
+            width:100%;
+            height:100%;
+            background: black;
+            opacity:0.8;
+        }
+    </style>
+    <script>
+        //opacity를 0.8과 0으로 왔다갔다 할 수 있게 변수로 설정. 삼항연산자를 사용!!
+        var op=0.8;
+        //true가 계속 있지 않게, false도 되도록 변수로 설정 
+        var flag=true;
+        // false일 때는 불 끄기, true일 때는 불 켜기
+        
+        
+        var swImg="ON.png";  //스위치 이미지
+      
+
+        //스위치를 켜고 끄는 함수
+        function turn(){
+            //surface 제어:문서내의 surface라 불리는 요소의 스타일 중 opacity값을 0과 0.8으로 왔다갔다
+            op=(flag)? 0:0.8;      // 켜0 : 끄0.8
+            // op=(op==0.8)? 0:0.8;
+         
+            document.querySelector("#surface").style.opacity=op;
+            x=(flag)? "on":"off";
+         
+            document.querySelector("img").src="../images/"+x+".png";
+                                            // wrapper안에 있는 img니까 ("#wrapper img")로도 할 수 있음
+                                            // .src="../images/ON.png"; 도 ok BUT
+                                    // 결론: 이미지명은 결정되지 않은 변수로 가자!
+            flag = !flag;
+
+                       // swImg = (flag)? "ON.png":"OFF.png" ;  로 해도 됨.
+                        // 
+
+            
+          
+            //기존 값을 뒤집자!! 뒤집으려면 논리값이 최고!! & 스위치 이미지도 제어
+        }
+            
+            //그 다음 스위치 이미지 제어 (이 코드도 두 개의 이미지가 나오고 말고의 흑백논리)
+                
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="surface"></div>
+        <img src="../images/OFF.png" alt="" onclick="turn()"> 
+
+
+
+    </div>
+</body>
+</html>

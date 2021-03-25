@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #wrapper{
+        width:600px;
+        height:600px;
+
+        margin: auto;
+    }
+    #pic {
+        width:100%;
+        height:550px;
+        background-color: #CCCCCC;
+
+    }
+    #control{
+        position: relative;    /*자식 때문에 명시 */
+        width:100%;
+        height:50px;
+    
+    }
+
+    #pic img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    }
+    #control img{
+        width:40px;
+    }
+.arrow1{
+    position:absolute;
+    left:0px;
+}
+.arrow2{
+    position:absolute;  /* control이 부모라서 부모도 명시해야해 */
+    right:0px;
+
+}
+
+</style>
+<script>
+   var n=1;
+    function next(){
+        if (n>=4)
+        n=0
+        n=n+1;
+   
+        //여기에는 문서내의 arrow2라고 불리는 요소의 src의 값을 변경해야해!!
+        document.querySelector("#pic img").src="../images/inka/"+n+".jpg";
+    }
+    function previous(){
+        if(n<=1)
+        n=5
+        n=n-1;
+        document.querySelector("#pic img").src="../images/inka/"+n+".jpg";
+    }
+
+</script>
+
+<body>
+    <div id="wrapper">
+        <div id="pic">
+            <img id="inka" src="../images/inka/1.jpg" alt="">
+        </div>
+        <div id="control">
+            <img id="arrow1" src="../images/inka/leftarrow.png" class="arrow1" onclick="previous()">
+            <img id="arrow2" src="../images/inka/rightarrow.png" class="arrow2" onclick="next()">
+         </div>
+    </div>
+    
+</body>
+</html>

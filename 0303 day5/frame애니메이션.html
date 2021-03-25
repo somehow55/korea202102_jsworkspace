@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOVE</title>
+<script>
+
+    var n=1;
+function next(){
+    //애니메이션 효과를 내기 위해선 이미지를 교체해야 함.
+    // 문서내의 이미지의 src의 값을 변하게 하자!
+
+    if(n>=18)
+    n=0;
+    n=n+1;
+
+    document.querySelector("img").src="../images/hero/image"+n+".png"
+}
+
+</script>
+
+</head>
+<body>
+    <button onclick="next()">어두운 조명 아래 날 사로잡은</button>
+    <img src="../images/hero/image1.png" alt="">
+
+</body>
+</html>
