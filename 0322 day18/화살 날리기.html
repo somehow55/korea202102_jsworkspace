@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>화살 날리기</title>
+</head>
+<script>
+    function init2(){
+
+    }
+    // 1회성이 아닌, 추후 두고두고 써먹을 코드 영역을 지정한 후, 거푸집으로 선언하자!
+    // 전산에서는 이 거푸집, 코드 단위를 클래스라고 한다.
+    // 2015년부터 ECMAScript(자바스크립트 정식 명칭)에서는 class를 지원하기 시작했다.
+    // 클래스명은 자바, C# 등에서 첫 철자를 대문자로 작성함이 약속.
+
+class Arrow{    //화살 자체가 아니라, 장차 화살을 만들어 낼 틀~! 즉 물건 자체가 아님.   자바 스크립트에서는 사물이 보유한 변수는 constructor()라는 함수 즉 생성자 함수 내에 작성해야 하는 규칙이 있다.
+    constructor(){
+    this.span;
+    this.span;
+    this.velX1 = 10;       //x좌표의 속도
+    var x1  = 0;         //x좌표
+    var n;
+
+init(){        //사물이 보유한 함수를 가리켜, 그 사물의 동작방식, 방법을 표현한다고 하여 메서드(method)라고 한다. (function **이 그냥 **이 됨)
+    span = document.createElement("span");
+    span.style.position = "absolute";
+    span.style.left = 0 + "px";
+    span.style.top = 100 + "px";
+    span.innerText = "→";
+    span.style.fontSize = 20 + "px";
+    span.style.color = "red";
+    document.body.appendChild(this.span);    //body에 부착!
+}
+
+move(){
+    this.x = this.x + this.velX;       //즉, 10씩 누적되게  x = x + 10
+    this.span.style.left = x + "px";
+}
+
+function getRandom(n){
+    for(var i = 1; i<=7; i++){
+        var r = parseInt(Math.random()*n);  //0 ~ 1 '사이'의 난수를 발생시킨다
+    }
+    // console.log(r);
+    return r;
+}
+
+window.addEventListener("load", function(){ //원하는 만큼 거푸집으로부터 화살을 생성해보자! 즉 쇳물 붓기!
+    var arrow1 = new Arrow();arrow1.init();
+    var arrow2 = new Arrow();arrow2.init();
+    var arrow3 = new Arrow();arrow3.init();
+    var arrow4 = new Arrow();arrow4.init();
+    var arrow5 = new Arrow();arrow5.init();
+    var arrow6 = new Arrow();arrow6.init();
+    var arrow7 = new Arrow();arrow7.init();
+    // init(); init삭제
+    // setInterval("move()", 300);
+});
+}
+</script>
+<body>
+    
+</body>
+</html>

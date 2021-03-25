@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>무지개 이퀄라이저</title>
+
+<script src = "../js/bar.js"></script>
+<script src = "../js/lib.js"></script>
+
+<script>
+var wrapper;
+// var bar;    //막대기 1개를 담는 전역변수
+var barArray = new Array();    //막대기들을 담는 전역배열
+var colorArray = ["red", "orange", "yellow", "green", "blue", "navy", "purple"];
+var count = 0;      //수를 세기 위한 카운터 변수
+var flag = true;
+
+function init(){
+    wrapper =document.getElementById("wrapper");
+    wrapper.style.width=500+"px";
+    wrapper.style.height=400+"px";
+    wrapper.style.margin="auto";
+    wrapper.style.border="4px solid blue";
+    wrapper.style.position="relative";
+    
+    createBar();    //이퀄라이저 박스 생성하기!
+}    
+
+function createBar(){
+    // 생성자의 프로토타입(constructor(container, width, height, x, y, bg, targetH)
+    for(var i = 0; i<10; i++){
+        var bar = new Bar(wrapper, 50, 50, 50*i, 0, colorArray[getRandom(colorArray.length)], getRandom(350)+10);
+        // 생성된 막대기 1개를 배열에 넣자!!
+        barArray.push(bar);
+    }
+}
+
+// 게임에서 움직이는 모든 호출은 여기서 진행! 게임루프(게임의 심장...)
+function gameLoop(){
+    if(flag){
+        for(var i=0; i<barArray.length; i++){       //생성된 바 개수만큼!
+            barArray[i].render();
+        }
+        count++;
+        setTarget();
+    }
+}
+
+//  일정 시간 간격으로, 어떤 바를 움직일지를 결정하여, 그 bar의 targetH값을 지정해보자!
+function setTarget(){
+    // console.log("setTarget()호출함",count);
+    // 속도를 늦출 필요가 있을 때는 '조건'을 줘야 한다... = %...(마다)
+    if(count%20==0){    //이런걸로 속도 조절이 가능하다
+        barArray[getRandom(barArray.length)].targetH = getRandom(350)+10;
+    }
+
+}
+
+
+window.addEventListener("load", function(){
+    init();
+    setInterval("gameLoop()",20); //fps (frame per seconds)
+    // setInterval("setTarget", 800);      //여러개의 셋인터발이 this에 접근하려 하면 꼬일 수도 있지만 얜 아니므로 괜춘...!
+});    
+
+</script>
+</head>
+<body>
+    <div id="wrapper"></div>
+    <!-- 자바스크립트를 작성할 수 있는 영역
+    1) script 태그 안
+    2) 이벤트 핸들러 안     ← 이번 버튼은 여기에 해당함
+    3) a href = "javascript: 영역" -->
+    <button onclick="flag=!flag;">ON/OFF</button>
+</body>
+</html>
