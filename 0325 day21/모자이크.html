@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모자이크</title>
+<script src="../js/Rect.js"></script>
+<script>
+var container;
+var cellSize=50; //셀 하나당 너비,높이가 같은 정사각형
+var cols=10; //호수 즉 column 의 갯수 
+var rows=15;  //층수 즉 record 갯수
+
+function init(){
+    container=document.createElement("div");
+    container.style.width=cellSize*cols+"px";
+    container.style.height=cellSize*rows+"px";
+    container.style.margin="auto";
+    container.style.backgroundImage="url(../images/mariobg.jpg)";
+    container.style.backgroundPosition=(cellSize*cols) + "px" + (cellSize*rows) + "px";
+    container.style.position = "relative";
+
+    //화면에 부착!!
+    document.body.appendChild(container);
+
+    createRect();
+}  
+
+// 사각형 셀 생성하기!
+function createRect(){
+    // constructor(container, width, height, x, y, bg)
+
+    // 10호의 7층짜리 아파트에 Rect 인스턴스를 채우자!
+    for(var i = 0; i<rows; i++){ 
+        for(var a = 0; a<cols; a++){
+            new Rect(container, cellSize, cellSize, a*cellSize, i*cellSize, "red");
+        }
+    }
+}
+
+window.addEventListener("load", function(){
+    init();
+});
+</script>
+</head>
+<body>
+   
+</body>
+</html>

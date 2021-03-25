@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+*{
+    margin:0px;
+    padding:0px;
+}
+#wrapper{
+    width:100%;
+    height:600px;
+    background: url("../images/mariobg.jpg");
+    position: relative;
+    overflow: hidden;
+}    
+#info{
+    background: yellow;
+    opacity: 0.4;
+    position: relative;
+}
+</style>
+<script src="../js/lib.js"></script>
+<script src="../js/Plane.js"></script>
+<script src="../js/Bullet.js"></script>
+<script src="../js/Enemy.js"></script>
+<script src="../js/Hp.js"></script>
+<script src="../js/Item.js"></script>
+<script src="../js/ItemRole.js"></script>
+<script>
+var wrapper;    
+var info;
+var bgX=0;
+var plane;
+var bulletArray=new Array();
+var enemyArray=[];
+var enemySrc=["e1.png","e2.png","e3.png","e4.png","e5.png"];
+var hpArray = [];
+var itemArray = [];
+var candySrc = ["candy.png", "candy2.png", "candy3.png", "candy4.png"];
+var count = 0;
+var bulletSrc = ["ball.png", "missile.png", "missile2.png"];
+var weaponIndex = 0;
+var roleArray = [];
+
+
+function init(){
+    wrapper = document.getElementById("wrapper");
+    info = document.getElementById("info");
+    createHero();
+
+    createEnemy();
+
+    createItemRole()
+
+    createHp();
+
+    document.body.addEventListener("keydown", function(){
+        pressDown();
+    });
+    
+    document.body.addEventListener("keyup", function(){
+        pressUp();
+    });
+}   
+function pressUp(){
+    switch(event.keyCode){
+        case 37:plane.velX=0;break;
+        case 39:plane.velX=0;break;
+        case 38:plane.velY=0;break;
+        case 40:plane.velY=0;break;
+    }
+}
+
+function pressDown(){
+    var key = event.keyCode;
+
+    switch(key){
+        case 39: plane.velX=5;break;     
+        case 37: plane.velX=-5;break;     
+        case 40: plane.velY=5;break;     
+        case 38: plane.velY=-5;break;     
+        case 32: fire();break;     
+    }
+    plane.render();
+}
+
+function fire(){
+    var bullet = new Bullet(wrapper, "../images/shooting/"+bulletSrc[weaponIndex], 16, 16, plane.x+plane.width, plane.y+(plane.height/2)-(8), 10,0);
+    bulletArray.push(bullet);
+}
+
+function createHero(){
+    plane = new Plane(wrapper, "../images/shooting/jet.png", 70,45,100,200,0,0);
+}
+
+function createHp(){
+    for(var i = 0; i<3; i++){
+        var hp = new Hp(info, "../images/shooting/heart.png", 20, 20, i*23, 0);        
+        hpArray.push(hp);
+    }
+}
+
+function createEnemy(){
+    for(var i=0; i<enemySrc.length;i++){
+        enemyArray[i] = new Enemy(wrapper, "../images/shooting/"+enemySrc[i] , 60,40, screen.width, 200+60*i ,-2,0);
+    }   
+}
+
+function createItemRole(){
+    for(var i = 0; i < candySrc.length; i++){
+    var itemRole = new ItemRole(i, "../images/shooting/"+candySrc[i]);
+    roleArray.push(itemRole);
+    }
+}
+
+function createItem(){
+    // for(var i = 0; i < candySrc.length; i++){
+    //     var item = new Item(roleArray[i], wrapper, 25, 25, screen.width+getRandom(100), 50+getRandom(500), -3, 0);
+    //     itemArray.push(item);
+    //     }
+
+    var n = getRandom(itemArray.length);
+    var iteｍ = new Item(roleArray[n], wrapper, 30, 30, screen.width + getRandom(100), 50+getRandom(500), -3, 0);
+    }
+
+function bgEffect(){
+    bgX--;
+    wrapper.style.backgroundPosition=bgX+"px  0px";
+} 
+
+function gameLoop(){
+    bgEffect();
+
+    plane.tick();
+    plane.render();
+
+    for(var i=0; i<bulletArray.length;i++){
+        bulletArray[i].render();
+        bulletArray[i].tick();
+    }
+    for(var i=0; i<enemyArray.length;i++){
+        enemyArray[i].render();
+        enemyArray[i].tick();
+    }
+
+    for(var i = 0; i < itemArray.length; i++){
+        itemArray[i].render();
+        itemArray[i].tick();
+    }
+
+    if(count%600==0){
+    createItem();
+    }
+    log();
+    count++;
+}   
+
+function log(){
+    var str="총알갯수: "+bulletArray.length;
+    str = str + ", 적군수:"+enemyArray.length;
+    document.getElementById("status").innerText = str;
+}
+
+window.addEventListener("load", function(){
+    init();
+    setInterval("gameLoop()",10);
+});
+
+</script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="info">
+            <div id="status" style = "margin-left: 130px;"></div>
+        </div>
+    </div>
+</body>
+</html>
