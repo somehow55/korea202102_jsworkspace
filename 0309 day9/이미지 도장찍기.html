@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{margin:0px;}
+        .wrapper{
+            width:700px;
+            height:500px;
+            background-color: yellowgreen;
+            overflow: hidden;
+        }
+        .menu{
+            width:100px;
+            height:100%;
+            background-color:turquoise;   
+            float: left;         
+        }
+        .content{
+            width:600px;
+            height:100%;
+            background: gray;
+            float: left;
+            position: relative;     
+        }
+        /* content에 img를 부착시켰고, 그 img를 position : absolute했으니 얘도 relative해줘야 함 */
+        .menu img{
+            width: 70px;
+            height:80px;
+            border: 5px solid brown;  
+        }
+    </style>
+    <script>
+        var n=1;    // = 도장찍힐 이미지명!
+        //content div에 마우스를 누를 때마다, 이미지를 '동적(createElement)'으로 부착하기! 단, 이미지가 붙을 위치는 마우스를 클릭한 좌표와 동일하게....
+        function stamp(){
+            var img = document.createElement("img");    //메모리상에만 존재
+            img.src="../images/poker/"+n+".PNG";
+            img.style.width=75+"px";
+
+            //x, y좌표의 값을 마우스 값과 일치시킨다
+            var x = event.clientX;  //마우스 x좌표
+            var y = event.clientY;
+            img.style.position = "absolute";     // 마우스 좌표 자체가 absolute!
+            img.style.left = (x-35) + "px";
+            img.style.top = (y-40) + "px";
+
+            document.getElementById("x").innerText=x;
+            document.getElementById("y").innerText=y;
+
+
+            //content에 부착하자
+            var content = document.querySelector(".content");
+            content.appendChild(img);
+
+        }
+
+        //도장을 선택할 때마다, 따라다닐 이미지 1개 생성
+        {}
+
+    </script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="content" onmousedown="stamp()"></div>  
+           <!-- content를 menu보다 앞서서 놓기! = 카드들이 오른쪽으로 감-->
+           <!-- mouse up보다 down이 더 시점이 빠름!-->
+        <div class="menu">
+            <img src="../images/poker/1.PNG" onclick="n=1">
+            <img src="../images/poker/2.PNG" onclick="n=2">
+            <img src="../images/poker/3.PNG" onclick="n=3">
+            <img src="../images/poker/4.PNG" onclick="n=4">
+            <img src="../images/poker/5.PNG" onclick="n=5">
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<script>
+    var n = prompt("원하는 수를 입력");     //여기다 parseInt(prompt())해도 되긴 함!!
+    var first = n-1;
+    var last = parseInt(n)+1;   //parseInt = 정수화! 저거 안하면 n숫자를 문자열로 인식해서 5+1이 6이 아닌 "51"이 된다.
+
+    for(var i=first; i<=last; i++){
+        document.write(i+"&nbsp");
+    }
+</script>
+
+<!-- 
+last 변수를 var last = 0; 로 초기화 시키고 시작해도 숫자가 아닌 문자열로 판단하는 것
+: 자바스크립트에서 알아서 해석해서 문법적오류가 안나는것!!! -->
+<!-- 그럼 앞으로 숫자값 입력받을땐 그냥 프롬프트에 parseInt해주면 깔끔 -->
+
+
+<!-- 정답은!!!!! 꼭 공부해야해 이번건 !!!!!
+<script>
+//반복문은 처음과, 끝값을 지정해야 한다!!
+var n = prompt("원하시는 수를 입력하세요"); //가운데 수 역할
+var first=n-1; //시작값 
+//parseInt(n)  문자열인 "n"을 정수로 변환!! 따라서 쌍따옴표가 제거됨
+//prompt()에 입력된 모든~~데이터는 문자열 취급하므로, 반드시 
+//정수화 시켜주는 처리를 하면 좋다!!! parseInt()
+var last=parseInt(n)+1; //끝값 
+
+for(var i=first;i<=last;i++){
+    document.write(i+"&nbsp;&nbsp");
+}    
+</script>
+ -->

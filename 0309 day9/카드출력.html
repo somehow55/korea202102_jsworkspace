@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나는 개발자다_노바디</title>
+    <script>
+        var div;        //모든 함수에서 접근이 가능하도록 지역변수_function init()인 얘를 여기다 선언!
+        var n=0;        //변수의 값이 숫자인 경우에는 반드시 초기값을 할당하자! 0으로 줘야 1으로 나오기 때문에 0으로 주기!
+
+        window.addEventListener("load", function(){
+            init();
+        });
+        //디자인 초기화~~ (버튼,wrapper 등등....)
+        function init(){
+            var bt = document.createElement("button");  //버튼 생성. but버튼만 생기고 안에 내용물은 없음.
+            bt.innerText = "카드생성";      //이걸로 버튼에 텍스트 넣기
+            bt.addEventListener("click", function(){        //버튼을 클릭하면!
+                createCard();
+            });
+            
+            //자동으로 이미지 띄우는 버튼 생성
+            var bt2 = document.createElement("button");
+            bt2.innerText = "자동생성";
+            bt2.addEventListener("click", function(){
+                hak=setInterval("createCard()",100);
+            });
+            
+            var hak = document.createElement("button");
+            hak.innerText = "멈춤";
+            hak.addEventListener("click", function(){
+                clearInterval(hak);
+            });
+
+            div = document.createElement("div");    //div(배경)생성
+            div.style.width=800+"px";
+            div.style.height=600+"px";
+            div.style.background="yellow";
+            div.style.margin="auto";
+            div.style.overflow="hidden";
+
+
+            //생성된 버튼을 body에 부착!!
+            document.body.appendChild(bt);
+            document.body.appendChild(bt2);
+            document.body.appendChild(hak);
+            document.body.appendChild(div);
+        
+        }
+
+        function createCard(){      //카드 이미지를 동적(실행타임에)으로 생성하여, div에 부착하자!
+            var img = document.createElement("img");        //img생성
+            n=n%5;      //순환구조는 % 쓰면 굳이 if문 안 써도 되고 편-안!
+            n++;
+            img.src = "../images/poker/"+n+".png";
+            img.style.width = 50 + "px";
+
+            //5를 넘어서면 1로 다시 되돌아가야함. 그렇다면?
+            // if(n>=5){
+            //     n=0;
+
+            //이미지를 div에 자식요소로 부착!!
+            div.appendChild(img);
+        }
+      
+
+       
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
