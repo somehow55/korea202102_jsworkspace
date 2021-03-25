@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>" 2차원 배열은 데이터베이스다 "</title>
+</head>
+<style>
+    .wrapper{
+        width: 1200px;
+        height: 600px;
+        background-color: green;
+        overflow: hidden;
+    }
+    #content{
+        width: 1000px;
+        height: 100%;
+        background-color: yellow;
+        float: left;
+    }
+    #log{
+        width: 200px;
+        height: 100%;
+        background-color: tomato;
+        float: left;
+    }
+
+</style>
+<script>
+    var content, log;       //변수 선언 연달아 가능
+    var aptbox=[];     //lineBox를 모아놓을 바깥쪽배열 (지금은 1차원)
+
+    
+
+    function init(){
+        content = document.getElementById("content");
+        log = document.getElementById("log");
+        createRect();
+    }
+
+    //그림판의 픽셀을 표현할 사각형 생성
+    function createRect(){
+        var lineBox = [];       // 한줄에 존재하는 모든 사각형을 담게 될 배열...
+        for(var i = 0; i<(1000/5); i++){        //content 가 1000px이라서 1000...
+            var rect = document.createElement("div");
+            rect.style.border = "1px solid red";
+            rect.style.width = 5 + "px";        //모공의 크기 정하기
+            rect.style.height = 5 + "px";
+            rect.style.boxSizing = "border-box";        // 보더를 조정해도 바깥에 영향이 안가게 = 계산하게 편하게 된다
+            rect.style.float = "left";
+            content.appendChild(rect);      //그림판에 부착하는 것
+            //생성된 사각형을 배열에 담자 (1차원 배열)
+            lineBox.push(rect);
+        }
+    }
+
+
+    window.addEventListener("load", function(){
+        init();
+    })
+
+</script>
+<body>
+    <div class = "wrapper">
+        <div id = "content"></div>
+        <div id = "log"></div>
+    </div>
+    <button>Rec</button>
+    <button>Delete</button>
+    <button>Play</button>
+    
+</body>
+</html>

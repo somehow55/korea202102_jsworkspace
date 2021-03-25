@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>" 2차원 배열은 데이터베이스다 "</title>
+</head>
+<style>
+.wrapper{
+    width: 1200px;
+    height: 600px;
+    background-color: green;
+    overflow: hidden;
+}
+#content{
+    width: 1000px;
+    height: 100%;
+    background-color: yellow;
+    float: left;
+}
+#log{
+    width: 200px;
+    height: 100%;
+    background-color: tomato;
+    float: left;
+}
+
+</style>
+<script>
+var content, log;       //변수 선언 연달아 가능
+var aptBox=[];     //lineBox를 모아놓을 바깥쪽배열 (지금은 1차원)
+// var flag = false;       //처음에는 안 보이게..  디버깅할때만 개발자를 위해 보여짐!   얘는 밑에 주석처리 했으므로 여기도
+var border = 0;       //처음에는 안 보이게..  디버깅할때만 개발자를 위해 보여짐!
+
+
+
+function init(){
+    content = document.getElementById("content");
+    log = document.getElementById("log");
+    createRect();   //사각형 생성 호출!
+}
+
+//그림판의 픽셀을 표현할 사각형 생성
+function createRect(){
+    for(var a = 0; a < (600/5); a++){
+        var lineBox = [];       // 한줄에 존재하는 모든 사각형을 담게 될 배열...
+        for(var i = 0; i<(1000/5); i++){        //content 가 1000px이라서 1000...
+            var rect = document.createElement("div");
+            // if(flag){
+            //     rect.style.border = "1px solid red";        //사각형은 존재하고 border만 없애려고 넣는 if문
+            // } 이거 말고 그냥 밑으로 하기로 결정. 0px이면 어차피 안 보이니
+            rect.style.border = border + "px solid red";
+            rect.style.width = 5 + "px";        //모공의 크기 정하기
+            rect.style.height = 5 + "px";
+            rect.style.boxSizing = "border-box";        // 보더를 조정해도 바깥에 영향이 안가게 = 계산하게 편하게 된다
+            rect.style.float = "left";
+            content.appendChild(rect);      //그림판에 부착하는 것
+            //생성된 사각형을 배열에 담자 (1차원 배열)
+            lineBox.push(rect);
+
+            //생성되는 모든 사각형에 대해 마우스 이벤트를 부여하자
+            rect.addEventListener("mouseover", function(){
+                // 지금 이벤트를 일으킨 요소의 style의 배경색 변경
+                // 지금 이벤트를 일으킨 요소를 this 라고 한다
+                this.style.background = "black";             //rect.style.이 아니라 this.style.로 해야 먹음....
+            });
+        }
+    //하나의 lineBox가 완성된 후, aptBox에 담자!
+    aptBox.push(lineBox);   //이 시점부터 2차원 배열이 된다!
+    }
+}
+
+function setFlag(){
+    // flag = !flag;            if문 껐으니 얘도 끄기!
+    border = (border==0)? 1:0;
+    // border = 1;
+    // 이미 생성된 사각형들의 border를 조절!!
+    // 2차원 배열인 aptBox로부터 모든 요소의 border를 0으로 추가
+    for(var a = 0; a < aptBox.length; a++){      //층수만큼
+        for(var i = 0; i < aptBox[a].length; i++){      //호수만큼
+            //aptBox[a]는 lineBox를 이름대신 응용한 
+            aptBox[a][i].style.border = border + "px solid red";
+        }
+    }
+}
+
+                                                                                                                                 
+window.addEventListener("load", function(){
+    init();
+})
+
+</script>
+<body>
+<div class = "wrapper">
+    <div id = "content"></div>
+    <div id = "log"></div>
+</div>
+<button>Rec</button>
+<!-- 녹화는 저장. 하드디스크 말고 메모리에 저장. -->
+<button>Delete</button>
+<button>Play</button>
+<button onclick="setFlag()">debug모드</button>
+
+</body>
+</html>

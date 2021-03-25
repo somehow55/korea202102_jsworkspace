@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시험문제6~8번</title>
+    <script>
+// 6번
+// var p = prompt("원하는 단을 숫자만 입력하세요!");
+
+//     for (var i = 1; i<=9; i++){
+//         document.write(p+"*"+i+"="+(p*i)+"<br>");            
+//     }
+
+
+// // 7번
+//         var p = prompt("원하는 단을 숫자만 입력하세요!");
+//         for(var a=p; a>=2; a--){
+//             document.write(a+"단------------<br>")
+//             for (var i = 1; i<=9; i++){
+//                 document.write(a+"*"+i+"="+(a*i)+"<br>");            
+//             }
+//         }
+
+//8번
+
+function table(){
+    document.write("<table width=\"500px\" border=\"1px\" style=\"text-align:center\">");
+    for(var i=3; i>=1; i--){
+        document.write("<tr>");
+        for(var a=1; a<=2; a++){
+            document.write("<td>"+i+"0"+a+"호</td>");
+        }
+        document.write("</tr>");
+    }
+    document.write("</table>");
+}
+window.addEventListener("load", function (){
+    table();
+});
+</script>
+
+//         <!-- var n = prompt("원하는 수를 입력");
+//     // 결론 : n부터 시작하여, 0보다 큰 수까지의 정수를 출력한다
+//     for(var i = n; i>0; i--){
+//         document.write(i+",<br>")
+//     }
+
+//     var d = prompt("원하는 단을 입력하시게");
+//     for(var i=1; i<=9; i++){
+//         document.write(d+" 곱하기 "+i+"="+(d*i)+"<br>");
+//     } -->
+// </head>
+// <body>
+//     <!-- 
+//         6번. prompt()로 원하는 단을 입력받아 document.write()로 출력하세요
+
+//      -->
+    
+</body>
+</html>

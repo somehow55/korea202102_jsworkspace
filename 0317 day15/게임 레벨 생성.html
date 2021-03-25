@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>게임 스테이지 동적 생성</title>
+<style>
+    #container{
+        width: 1000px;
+        height: 600px;
+        background:  url(../images/bg.jpg);
+        background-size:  1000px 600px;
+        margin: auto;
+        position: relative;
+    }
+</style>
+<script>
+var container;
+var map=[
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0],
+    [0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+];
+// 이런식으로 ↑ 1을 넣으면 블럭이 있다는게 되니까 원하는곳에 마음대로 넣을 수 있음 굿굿
+function init(){
+    container = document.getElementById("container");
+    createBlock();
+}
+
+//게임에 등장할 블럭을 container div에 올려놓자!
+function createBlock(){     //가로 세로 있으니 이중for문!
+    for(var i = 0; i < map.length; i++){          //층수
+        for(var a = 0; a < map[i].length; a++){      //호수 map[i].length인 이유는, 특별히 정해진 게 아니라 위의 것에 길이일 뿐이므로..
+            if(map[i][a]==1){       //1일 때 벽돌 생성
+                var img = getGameItem("block.png", a, i);       //매개변수 a, i도 받아야 함
+                //내가 원하는 위치에 배치해보기
+                container.appendChild(img);
+
+            }else if(map[i][a] == 2){
+                var img = getGameItem("coin.png", a, i);        //매개변수 a, i도 받아야 함
+                container.appendChild(img);         //append까먹지 말기!!!!
+            }
+        }
+    }
+}
+
+//이 함수를 호출하는 자는, 원하느 게임 아이템을 가져갈 수 있다!!
+function getGameItem(path, a, i){     //함수 호출자가 원하는 경로를 매개변수값(path)로 넘겨야 한다      //매개변수 a, i도 넘겨야 함
+    var img = document.createElement("img");
+                img.src = "../images/" + path;
+                img.style.width = 50 + "px";
+                img.style.height = 50 +"px";
+                img.style.position = "absolute";
+                img.style.left = (50*a) + "px";
+                img.style.top = (50*i) + "px";
+
+                return img;         //반환값이 있는 함수로 정의~
+}
+
+
+window.addEventListener("load", function(){
+    init();
+});
+
+</script>
+</head>
+<body>
+<div id="container"></div>
+
+</body>
+</html>

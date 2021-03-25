@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원관리 프로그램</title>
+<style>
+.wrapper{
+    width:1000px;
+    height:600px;
+    background:yellow;
+    margin: auto;
+    overflow: hidden;
+} 
+
+#regist-area, #detail-area{
+    width:150px;
+    height:100%;
+    background:rgb(64, 9, 151);
+    float:left;
+} 
+#regist-area input, #detail-area input{
+    width:90%;
+    font-size:18px;
+    border-radius: 5%;
+    background-color: rgba(30, 33, 161, 0.836);
+    color:white;
+    border:1px solid #ffffff;
+}
+#list-wrapper{
+    width:700px;
+    height:100%;
+    background-color: darkslateblue;
+    float:left;
+}  
+</style>
+
+<script src="../js/font.js"></script>
+
+<script>
+    var listArea;
+    var t_id, t_name, t_phone, t_money;
+    var t_id2, t_name2, t_phone2, t_money2;
+    var memberArray = [];
+    var n = -1;
+    var searchhArray = [];
+    var m;
+
+    function regist(){
+        for(var i = 0; i < memberArray.length; i++){
+            if(t_id.value == memberArray[i][0]){
+            alert("이미 존재하는 ID입니다");
+            return;}
+        }
+        if(isNaN(t_money.value)){
+            alert("자산은 숫자만 가능합니다.");
+            t_money.value="";
+            t_money.focus();
+            return;
+        }
+
+        if(t_id.value == ""){
+            alert("ID를 입력하세요")
+            t_id.focus();
+            return;
+        }
+        if(t_name.value == ""){
+            alert("이름을 입력하세요")
+            t_name.focus();
+            return;
+        }
+        if(t_phone.value == ""){
+            alert("연락처를 입력하세요")
+            t_phone.focus();
+            return;
+        }
+        if(t_money.value == ""){
+            alert("자산을 입력하세요")
+            t_money.focus();
+            return;
+        }
+
+        var member = [];
+        member[0] = t_id.value;
+        member[1] = t_name.value;
+        member[2] = t_phone.value;
+        member[3] = t_money.value;
+        console.log("지금 등록된 회원은 ", member);
+
+        memberArray.push(member);
+        console.log("총 누적 회원수 ", memberArray.length);
+        listArea.innerHTML = t_id.value;
+
+        getList(memberArray);
+    }
+    function getList(m){
+        var tag = "<table width=\"100%\" border=\"1\">";        
+        tag += "<tr style=\"background: hotpink\">";
+        tag+= "<td>No</td>";
+        tag+= "<td>ID</td>";
+        tag+= "<td>Name</td>";
+        tag+= "<td>Phone</td>";
+        tag+= "<td>Money</td>";
+        tag += "</tr>";
+
+        var sum = 0;
+
+        for(var i = m.length-1; i >=0; i--){
+            tag += "<tr onclick = \"select("+i+");\">";
+            tag+="<td>"+(i+1)+"</td>";
+            for(var a = 0; a <m[i].length; a++){
+                tag+= "<td>"+m[i][a]+"</td>";
+            }
+            sum = sum + parseInt(m[i][3]);
+            tag += "</tr>"
+        }
+        tag+="<tr>";
+        if(isNaN(sum/m.length)){tag+="<td colspan='5' align='right' bgcolor='orange'>총 가입 회원수 : " + m.length + "명, 누적 자산 : "+ sum +"원, 평균 자산 : 0원 </td>";}       //td가 5개라서 colspan 5
+        else{tag+="<td colspan='5' align='right' bgcolor='orange'>총 가입 회원수 : " + m.length + "명, 누적 자산 : "+ sum +"원, 평균 자산 : " + (sum/m.length) + "원 </td>";}       //td가 5개라서 colspan 5
+        tag+="<tr>";
+        tag = tag + "</table>";
+
+        listArea.innerHTML=tag;
+    }
+
+    function select(index){
+        n = index;
+        t_id2.value = memberArray[index][0];
+        t_name2.value = memberArray[index][1];
+        t_phone2.value = memberArray[index][2];
+        t_money2.value = memberArray[index][3];
+    }
+
+    function del(){
+        if(t_id2.value=="" &&  t_name2.value =="" && t_phone2.value == "" && t_money2.value == ""){
+            alert("삭제할 값을 선택하세요")
+        }else if(confirm("정말 삭제하시겠습니까?")){
+            memberArray.splice(n, 1);
+
+            t_id2.value = "";
+            t_name2.value = "";
+            t_phone2.value = "";
+            t_money2.value = "";
+            getList();
+        }
+    }
+
+    function modify(){
+        if(t_id2.value=="" &&  t_name2.value =="" && t_phone2.value == "" && t_money2.value == ""){
+            alert("수정할 값을 선택하세요")
+        }else if(confirm("이대로 수정하시겠습니까?")){
+            memberArray[n][0] = t_id2.value;
+            memberArray[n][1] = t_name2.value;
+            memberArray[n][2] = t_phone2.value;
+            memberArray[n][3] = t_money2.value;
+            getList();
+        }
+    }
+
+    function naver(){
+        var n1 = document.getElementById("selMenu");
+        var n2 = document.getElementById("selMenu").options.selectedIndex;
+        var n3 = n1.options[n2].value;
+
+        for(var i = 0; i<memberArray.length; i++){
+            if(searchh.value==memberArray[i][n3]){
+                searchhArray.push(memberArray[i])
+            }else if(searchh.value==0){
+                searchhArray.push(memberArray[i])
+            }
+        }
+        getList(searchhArray);
+        searchhArray = [];
+    }
+
+    function init(){
+        listArea = document.getElementById("list-area");
+        t_id = document.getElementById("t_id");
+        t_name = document.getElementById("t_name");
+        t_phone = document.getElementById("t_phone");
+        t_money = document.getElementById("t_money");
+
+        t_id2 = document.getElementById("t_id2");
+        t_name2 = document.getElementById("t_name2");
+        t_phone2 = document.getElementById("t_phone2");
+        t_money2 = document.getElementById("t_money2");
+        searchh = document.getElementById("searchh");
+        getList(memberArray);
+    }
+    window.addEventListener("load", function(){
+        init();
+    })
+</script>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="regist-area">
+            <input type="text" id = "t_id" placeholder="ID 입력">                
+            <input type="text" id = "t_name" placeholder="이름 입력">                
+            <input type="text" id = "t_phone" placeholder="연락처 입력">                
+            <input type="text" id = "t_money" placeholder="현금자산">      
+            <button onClick="regist()">등록</button>          
+        </div>
+        <div id="list-wrapper">
+            <div id="search-area">
+                <select id = "selMenu">
+                    <option value="0">ID로 검색</option>                        
+                    <option value="1">이름으로 검색</option>                        
+                </select>                    
+                <input type="text" placeholder="검색어 입력" id="searchh">       
+                
+                <button style='font-size:18px' onclick="naver()"> Search <i class='fas fa-search'></i></button>
+            </div>
+            <div id="list-area"></div>
+            </div>
+            <div id="detail-area">
+                <input type="text" id = "t_id2" placeholder="ID 입력">                
+                <input type="text" id = "t_name2" placeholder="이름 입력">                
+                <input type="text" id = "t_phone2" placeholder="연락처 입력">                
+                <input type="text" id = "t_money2" placeholder="현금 자산">    
+                <button onclick="modify()">수정</button>
+                <button onclick="del()">삭제</button>
+            </div>
+        </div>
+</body>
+</html>

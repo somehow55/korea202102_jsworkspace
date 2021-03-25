@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+     function checkAll(){
+        //문서내의 체크박스 중 kb라는 요소의 체크상태를 제어하려면,
+        // document.getElementById("kb").checked=true; // 콘솔 창에선 =true를 뺴면 값 상태 물어보는 걸로도 쓸 수 있음
+       
+        //문서내의 spam이라는 그룹 즉 spam으로 부여된 이름 배열을 이용해 일괄처리
+        var spam = document.getElementsByName("spam");
+        for(var i=0; i<=spam.length; i++){
+        spam[i].checked = document.getElementById("king").checked;  //king에 체크되면 spam 배열 0번에도 체크하는 것
+        }
+    }
+    </script>
+</head>
+<body>
+    <table border="1px" width="600px">
+        <tr>
+            <td width="30px">
+                <input type="checkbox" id="king" onclick="checkAll()">
+            </td>
+            <td>email title</td>
+        </tr>
+        <tr>
+            <!-- name과 id의 공통점과 차이점
+            공통점 : 둘 다 문서내의 요소들간 식별을 위해 쓰인다
+            차이점 : id는 중복 허용하지 않음. name은 중복도 허용함.
+            ★★★ 특히, html에서의 이름은 자바스크립트에서의 배열로 존재할 수 있다. ★★★
+            왜? name은 중복을 허용하기 때문에 
+        + class와 name의 차이는 class는 스타일을 쓰고싶을 때 쓰고 name은 요소 구분 용도... 주목적이 다름. 둘 다 배열로 잡히긴 함  -->
+            <td><input type="checkbox" name="spam"></td>
+            <td>★K%B은행 대출 안내☆</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="spam"></td>
+            <td>★우~리은행 대출 안내☆</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="spam"></td>
+            <td>★신!한은행 대출 안내☆</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="spam"></td>
+            <td>★카™카오\뱅크 대출 안내☆</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="spam"></td>
+            <td>★조+흥+은행 대출 안내☆</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="spam"></td>
+            <td>★러시앤©Cash 대출 안내☆</td>
+        </tr>
+    </table>
+    
+</body>
+</html>

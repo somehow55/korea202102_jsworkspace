@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>베네치아 타자게임 완성</title>
+</head>
+<style>
+#wrapper{
+    width: 1200px;
+    height: 600px;
+    background-color: yellow;
+    margin: auto;
+    overflow: hidden;
+}
+#dashBoard{
+    float: left;
+    width: 200px;
+    height: 100%;
+    background-color: aquamarine;        
+}
+#dashBoard input{
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    background-color: dodgerblue;
+    width: 95%;
+}
+#content{
+    float: left;
+    width: 1000px;
+    height: 100%;
+    background-color: burlywood;       
+    position : relative;            /* 이거 없으면 단어가 너무 왼쪽으로 감 */
+}
+#hpBox{
+    width: 100%;
+    height: 190px;
+    /* background-color: gray; */
+    margin-top: 50px;
+    box-sizing: border-box;
+    padding: 4px 2px 2px 2px;       /* left top right bottom 순서 */
+}
+#scoreArea{
+    font-size: 60px;
+    font-weight: bold;
+    text-align: center;
+    margin-top : 100px;
+}
+</style>
+
+<script src = "../js/lib.js"></script> 
+<!-- script src를 따로 빼는 이유 : 저 밑에다가 하면 아예 대체해버리는 걸로 되어버리니까 밑에 다 짜놓은거 날라감
+그러므로 src로 가져오는 script 태그 안에는 로직을 짜서는 안된다! -->
+
+
+<script>
+var hpBox;
+var content;
+var scoreArea;
+var keyword;
+// var span;       //제어할 단어 span       여기서 아래로 변경
+var spanArray=[];       // 단어는 여러개니까
+// var y = -8;     //단어의 초기 y축 위치      여기서 아래로 변경
+var yArray = [];
+var velY = 10;      //몇 발자국씩 내려올지, 속도를 결정하는 변수
+var score = 0;      // 점수를 누적시킬 전역변수
+var wordArray = [
+    ["마우스","광화문","핸드폰","지구","개구리","태풍","콘센트","자바","강아지","실로폰"],
+    ["지하철","사과","지갑","건널목","블랙홀","아비규환","전기","도서관","아스팔트","나무"],
+    ["방송국","구두","식량","온난화","버섯","늦잠","노트북","염치","학교","주사"],
+    ["재벌","바다","돼지","습기","구리","한강","벽돌","게임","김치","이순신"]
+];
+var n=0;   //몇번째 배열을 사용할 지 결정짓는 랜덤값
+
+var hpArray = [];       //hp상자들이 순서가 있어야 차례대로 지울 수 있기 때문에 배열로 선언
+var dropFlag = true;        //게임 실행과 동시에 단어가 낙하해야 하므로 true값을 준다
+
+function init(){
+    hpBox = document.getElementById("hpBox");
+    content = document.getElementById("content");
+    scoreArea = document.getElementById("scoreArea");
+    keyword = document.getElementById("keyword");
+
+    //한 단어를 입력 완료하는 시점! keyup
+    keyword.addEventListener("keyup", function(){
+        //엔터키를 누르면... 단어와 입력데이터와 비교!!
+        // console.log(event.keyCode);     //C대문자!!
+        
+        if(event.keyCode == 13){        //엔터를 쳤을 때만...
+            for(var i = 0; i < spanArray.length; i++){
+                if(spanArray[i].innerText == keyword.value){        //단어를 비교! ★★★  스팬 자체는 아니고 스팬에 있는 단어, 그리고 입력한 innerText말고 입력한 '값'을 비교
+                    //span은 완전히 제거!
+                    // 화면에 부착할 땐 appendChild이지만, 제거할 땐 removeChild() ★★★
+
+                    //제거함수 호출
+                    // removeObject(content, 자식, 배열, 번째);
+                    removeObject(content, spanArray[i], spanArray, i);
+                    console.log("남은 단어의 수는 ", spanArray.length);
+                    //그리고 밑의 5줄 제거
+
+                    // content.removeChild(spanArray[i]);      //화면에서 제거
+                    // //화면(removeChild())뿐만 아니라 배열에서도 제거 (splice 사용)(splice(index, how many);)
+                    // spanArray.splice(i, 1);
+                    // console.log("남은 단어의 수는 ", spanArray.length);
+                    // // f.indexOf("apple");  이러면 1이라고 뜸 (두번째)   이렇게 몇번째에 있는 index인지 알아내서 그 자리만 지워주면, 단어들이 순간이동하듯이 없어지진 않음
+
+                    keyword.value = "";         //텍스트 입력초기화!
+                    score += 10;        //10누적
+                    printScore();       //점수 출력
+                }
+            }
+        }
+    });
+}
+function createHp(){
+    //hp박스를 div로 생성해보자 (총 9개)
+    for(var i = 0; i < 9; i++){
+    var block = document.createElement("div");
+    block.style.width = 60 + "px";
+    block.style.height = 50 + "px";
+    block.style.backgroundColor = "red";
+    block.style.border = "1px solid gold";
+    block.style.borderRadius = "5px";
+    block.style.float = "left";
+    hpBox.appendChild(block);       //얘는 포지션 relative로 부착. 왜냐하면 좌표가 중요한 건 아니라서 & 하나씩 사라질 거니까.
+    //메모리에도 순서대로 쌓아놓자!!(즉 배열에 담자 )
+    hpArray.push(block);
+    }
+}
+
+//점수 출력을 전담하는 함수 정의
+function printScore(){
+    scoreArea.innerText = score + "점";
+}
+
+//단어 생성하기~
+function createWord(){
+    //단어를 감싸게 될 요소의 선택 기준? 단어의 길이 만큼만 감쌀 수 있는 inline  방식 중 하나를 선택하자!
+    //span은 단지 감싸는게 목적, inline방식은 너비가 컨텐츠 만큼만 확보된다. (.wrapping or pack)
+
+    var n = getRandom(wordArray.length);        //몇번째 배열을 사용할지 결정짓는 랜덤값
+
+    for(var i = 0; i < wordArray[n].length; i++){
+        var span = document.createElement("span");
+        span.innerText = wordArray[n][i];
+        span.style.backgroundColor = "white";
+        span.style.position = "absolute";   /* content div를 기준으로 위치 지정할 예정 */
+        span.style.left = 0+(100*i) +"px";     //서로 떨어진 자리에서 내려오게
+        //y값이 너무 일률적이면 재미가 없기 때문에, 랜덤값으로 서로 다른 y값을 부여하자!
+        //0 ~ -300값을 줄 예정
+        // yArray[i] = -getRandom(300);     //각 span마다 서로 다른 y값을 가져야 하므로!!!  //yArray[i]값을 바꾸게 되었으므로 얘도 삭제
+        //위로 올려야하므로 (늦게 나오게) getRandom에마이너스를 붙인다
+        span.style.top = -getRandom(300) +"px";   // 위 식을 지웠으므로 yArray[i] + "px";를 -getRandom(300)으로 바꾼다
+        
+        content.appendChild(span);      //화면에 부착! & span의 부모는 content가 됨
+        // return span;
+        //지역변수인 span이 곧 죽기 전에 배열에 span 엘리먼트를 담아놓자!
+        spanArray.push(span);
+    }
+}
+
+// 높이 랜덤값 구하기
+function getRandom(){
+    var r = parseInt(Math.random()*300);  //0 ~ 1 '사이'의 난수를 발생시킨다
+    // console.log(r);
+    return r;
+}
+
+function dropDown(){
+    if(dropFlag){       //setInterval을 멈추려고 하지 말고, 조건으로 처리하자!!!!!!!!! 내가 원할 때만 내려오게
+        // span.style.top = y + "px";      //이대로 가면 한 요소만 내려욤. 모두 내리려면 반복문 + 배열해야함
+        for(var i = 0; i < spanArray.length; i++){
+            // yArray[i] = yArray[i] + velY;       //velY = 단어 내려오는 속도!        //각각 자신의 위치부터 ~~씩 
+            spanArray[i].style.top = parseInt(spanArray[i].style.top)+ velY + "px"; //내 위치 + velY 해야한다. 그래야 단어 하나 치우고 순간이동 하지 않음. 이 때문에 위 식은 날렸다.
+
+            //지금 떨어지고 있는 span 각자는, 스스로 600을 넘어서고 있는지 체크해야함! 그래야 점수 차감이 되니까
+            if(parseInt(spanArray[i].style.top) >= 600){   //여기도 156행 때문에  yArray[i] 에서 변화했음
+                // console.log(i+"번째인 저는 이제 죽으러 갑니다.... 안녕....");
+                // console.log(spanArray[i].innerText + "죽으러 갑니다. 안녕.");
+                //hpArray[막내둥이] == hpArray[남아있는 배열의 마지막-1]
+                removeObject(content, spanArray[i], spanArray, i);
+
+                //hp는 9개이고, span은 10개일 경우, span 때문에 if조건문이 한 번 더 실행됨
+                if(hpArray[hpArray.length-1]!=undefined){
+                    console.log("삭제할 hp는 ",hpArray[hpArray.length-1]);
+                    removeObject(hpBox, hpArray[hpArray.length-1], hpArray, hpArray.length-1);  //hp하나 제거
+                    console.log("남아있는 hp수는 ", hpArray.length);
+                    //단어 스팬 제거
+                }
+            }
+        } 
+        //hp가 다 소진된건가? 배열의 길이가 0이면... 게임 끝
+        if(hpArray.length<=0){
+            dropFlag = false;       //더이상 드랍하지 않도록 스위치를 끈다
+            // alert("게임 오버");     //clearInterval 안하면 영원히 계속 창이 뜸
+            var ans = confirm("미션실패\n게임을 다시 시도하시겠어요?");
+            console.log("유저의 선택은 ", ans);
+            if(ans){        //'예' 를 눌렀으면 게임을 처음부터 다시 시작! = 새로고침 시키기
+                location.reload();      // == 페이지 새로고침!
+            }
+        }
+    }
+}
+
+//오브젝트 삭제에는 두 가지가 있다. 1. 화면에서 삭제 2. 메모리 상의 삭제
+//이 함수를 호출하는 자는 어디로부터 지울지 container를 매개변수로 넘겨줘야 함
+function removeObject(container, child, arr, index){
+    //화면에서 삭제 (부모 div로부터 제거, 물리적 제거)
+    // 부모 div.removeChild(지울대상= 자식요소); 어떤 함수든 쓸 수 있게 하려면 부모div는 변수로 해야겠지?
+    container.removeChild(child);
+
+
+    // 배열에서 삭제 (메모리 삭제)
+    //배열  splice(몇번째녀석, 몇개);
+    arr.splice(index, 1);   //168행의 arr..
+}
+
+window.addEventListener("load", function(){
+    init();
+    createHp();
+    printScore();
+    createWord();
+    setInterval("dropDown()", 100);
+    keyword.focus();        //단어 치면 다시 커서가 올라가게
+
+});
+</script>
+<body>
+    <div id = "wrapper">
+        <div id="dashBoard">
+            <div id="hpBox"></div> <!-- 글씨를 여기에 써버리면 block이 relative라서 하나만 딱 위로 올라가고 그 오른쪽에 글씨, 나머지가 붙는 형식으로 돼버린다-->
+            <input type="text" placeholder="단어입력 할 곳" id="keyword">
+            <div id="scoreArea"></div>
+        </div>
+        <div id="content"></div>
+    </div>
+    
+</body>
+</html>

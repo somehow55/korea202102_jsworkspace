@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>image카드 만들기</title>
+</head>
+<style>
+#wrapper{
+    width: 1000px;
+    height: 340px;
+    background-color: yellow;
+    margin: auto;
+    overflow: hidden;
+    text-align: center;
+}
+</style>
+
+<script>
+var wrapper;
+var cardArray = [];      //card 그대로 가면 카드 수가 늘어날 수록 변수도 많이 써야 함. 그 귀찮음을 방지하기 위해 배열 사용!
+var a = 0.1;    //부드러운 정도 (0~1. 1로 갈수록 둔탁)
+var targetY = [];    //텍스트박스의 목표지점       //270은 처음 순간에 멈춰있는 것처럼 보이게
+var imgArray = ["1.jpg", "2.jpg", "3.jpg"]
+var msgArray = ["네이버블로그 이미지 카드\n데이지 스튜디오", "별로 잘 나온\n사진들은 아니지만", "마땅히 할 만한\n사진이 없어서ㅠㅠ"]
+
+
+function init(){
+    wrapper = document.getElementById("wrapper");       //이미지보다 래퍼가 먼저 나오는게 맞음
+
+    for(var i = 0; i < 3; i++){
+        targetY[i] = 270;       //3개의 targetY의 값을 270로 설정
+        cardArray[i] = createCard(i, imgArray[i], msgArray[i]);     //생성된 카드를 전역변수로 빼놓음..
+        // wrapper.appendChild(card = createCard());   //한 개 생성을 호출!
+        wrapper.appendChild(cardArray[i]);   //위에서 얘로 바꿈
+    }
+}
+
+// 매개변수 index의 역할 : 0일 때 targetY[0], 1일 때 targetY[1], 2일 때 targetY[2]      //각자 사용할 전역변수가 따로 있기 때문에 ㅠ i로 전역변수 해도 다르게 넣어져야 함***
+function createCard(index, imgArray, msgArray){
+    console.log("createCard 호출 시 넘겨받은 인덱스는 ", index);
+
+    var card = document.createElement("div");  //이미지를 배경으로 안고있는 바깥쪽 카드
+    card.style.width = 300 + "px";
+    card.style.height = 340 + "px";
+    card.style.background = "url(../images/photo/"+imgArray+")";
+    card.style.backgroundSize = "cover";        // 중요★★★★
+    card.style.position = "relative";
+    card.style.overflow = "hidden";
+    card.style.float = "left";
+    card.style.margin = "5px";
+    card.style.boxSizing = "border-box";
+
+    //텍스트박스
+    var textBox = document.createElement("div");
+    textBox.style.width = 300 + "px";
+    textBox.style.height = 320 + "px";
+    textBox.style.backgroundColor = "rgb(65, 65, 63)";
+    textBox.style.opacity = 0.8     //삶짝 반투명   0이 투명 1이 불투명
+    textBox.style.position = "absolute";
+    textBox.style.top = 270+"px";
+    textBox.innerText = msgArray;
+    textBox.style.color = "whitesmoke";
+    textBox.style.fontSize = 15+"px";       //"20px"로도 되지만 저렇게 하는 건 유지보수를 위해...
+    textBox.style.textAlign = "center";
+    textBox.style.boxSizing = "border-box";
+    textBox.style.paddingTop = 15+"px";
+
+    //마우스 오버 이벤트 구현
+    textBox.addEventListener("mouseover", function(){
+        //top좌표를 0으로 올려보자!! (부드러운 움직임은 나중에 구현)
+        // this.style.top = 0 +"px";
+        //targetY를 정의했으니 그걸로 바꿔준다
+        targetY[index] = 0;
+    });
+    textBox.addEventListener("mouseout", function(){
+        // this.style.top = 270 +"px";
+        //targetY를 정의했으니 그걸로 바꿔준다
+        targetY[index] = 270;
+    });
+
+    //조립 (텍스트박스를 카드에 넣자)
+    card.appendChild(textBox);
+
+    return card;
+}
+
+//부드럽게 오르내리는 감속도 처리 함수
+function slideUpDown(){
+    //물체위지 = 기존 물체위지 + a*(목표지점 - 기존 물체 위치)
+    for(var i = 0; i < cardArray.length; i++){  //3개의 카드 각자마다 움직임 적용
+    var textBox = cardArray[i].children[0];       //textBox라는 안쪽div를 지칭  //지역변수라 textBox여기서 변수선언해도 됨. 여기서 children의 0은 하나 뿐인 자식을 설명... 고정값
+    // console.log("움직일 대상 div는 ", textBox);
+    textBox.style.top = parseFloat(textBox.style.top) + a*(targetY[i] - parseFloat(textBox.style.top)) + "px";     //콘솔창에 slideUpDown(); 치면 수동으로 올라감
+    }
+}
+
+window.addEventListener("load", function(){
+    init();
+    setInterval("slideUpDown()", 10);
+});
+</script>
+
+<body>
+    <div id = "wrapper"></div>
+    
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이차원배열은 데이터베이스다</title>
+<style>
+body{margin:0px;}    
+.wrapper{
+    width:1200px;
+    height:600px;
+    background-color: green;
+    overflow:hidden;/*자식이 float 되었기 때문에..*/
+}    
+#content{
+    width:1000px;
+    height:100%;
+    background-color: yellow;
+    float:left;
+    overflow: hidden;/*rect라는 div자식이 float 되었으므로...*/
+}
+#log{
+    width:200px;
+    height:100%;
+    background:yellowgreen;
+    float:left;
+}
+</style>
+<script>
+var content;
+var log;    
+var aptBox=[]; //lineBox를 모아놓을 바깥쪽 배열(지금은 1차원이다..)
+var border=0; //처음에는 안보이게...(디버깅할때만 개발자를 위해 보여짐)
+var flag=false; //색상적용 할지 여부를 결정하는 논리값 전역변수
+var recordArray=[];//x,y 포인트의 자취를 저장할 배열 , 추후 2차원 될 예정..
+var recordFlag=false; //녹화할지 여부를 결정짓는 논리값 ( 초기엔 녹화 안할것이므로 flase값임)
+var boxSize = 50;       //정사각형의 크기
+var playFlag = false;       //play재생을 할지 말지를 결정짓는 논리값
+var index = 0;      //play할 때 각 배열의 요소를 접근할 index
+var n = 10;     //정사각형 크기
+
+
+function init(){
+    content = document.getElementById("content");
+    log = document.getElementById("log");
+    createRect();//사각형 생성 호출!!!
+    setInterval("recPlay()", 200);  //clearTimeout 호출하지 않는다면 무한동작       // 프로그램 가동하자마자 돌아가게
+
+
+    //노란색 화면을 대상으로 마우스를 눌렀다면 (그림 그리고 싶음 flag=true)
+    content.addEventListener("mousedown", function(){
+        console.log("마우스 눌렀음");
+        flag=true;
+    });
+
+    //노란색 화면을 대상으로 마우스에서 손을 떼면 (그림을 멈추고 싶다는 의지 flag=false)
+    content.addEventListener("mouseup", function(){
+        console.log("마우스에서 손을 뗌");
+        flag=false;
+    });
+}   
+//그림판의 픽셀을 표현할 사각형 생성
+function createRect(){
+    for(var a=0;a<(600/n);a++){//층수만큼 또 반복!!!
+        var lineBox=[]; //한줄에 존재하는 모든 사각형을 담게될 배열..
+        for(var i=0;i<(1000/n);i++){
+            var rect=document.createElement("div");    
+            rect.style.border=border+"px solid red";
+            rect.style.width=n+"px"; //모공의 크기..
+            rect.style.height=n+"px";
+            rect.style.boxSizing="border-box";//border가 물리적 크기에 영향을 주지않음
+            rect.style.float="left";
+            //각 사각형에 개발자가 원하는 정보를 심어놓을 수만 있다면, 나중에 활용하기에 좋다!!
+            rect.id=[a,i];
+            // rect.innerText=rect.id;     //★★★ 이거 없애면 ㄹㅇ 그림판 처럼 됨! ★★★
+            content.appendChild(rect);//그림판에 부착!!
+            lineBox.push(rect);//생성된 사각형을 배열에 담자 1차원 배열
+            
+            //생성되는 모든~~사각형에 대해 마우스 이벤트를 부여하자!!
+            rect.addEventListener("mouseover", function(){
+                //지금 이벤트를 일으킨 요소의 style의 배경색 변경
+                //지금 이벤트를 일으킨 요소를 this
+                if(true){
+                    this.style.background="red";
+                    // 층,호수를 구해서 일차원 배열로 저장한 후, 최종적으로 recordArray에 저장!!
+                    var posi = this.id.split(",");     //split()는 콤마를 기준으로 문자열을 나누고, 그 결과를 배열로 반환해준다
+
+                    console.log("저는 지금 "+posi[0]+ "층, "+posi[1]+"호 에요");
+                    
+                    //녹화자료 수집!!
+                    if(recordFlag){//녹화를 원할때만...
+                        recordArray.push(posi);//일차원 배열에 사각형의 좌표가 있기때문에 이차원배열에 누적시키자
+                                                // 여기 this.id를 posi로 바꿔 써준다면 record가 안 뜸... 거기서 콘솔창 clear하고 하면 그 때부터 기록됨!
+                                                //정보 로그창에 지금까지 누적된 좌표를 출력하자!
+                        printLog(); //위 작업이 복잡할 것 같으니 함수로 코드 분리
+                    }
+                }                        
+            });
+
+        }
+        //하나의 lineBox가 완성된 후, aptBox에 담자!!
+        aptBox.push(lineBox);//이 시점부터 2차원배열이 된다!!
+    }
+}
+function setFlag(){
+    border=(border==0)?1:0; //결정하지 말고, 1 or 0 값 와야함
+
+    //이미 생성된 사각형들의 border를 조절!!!
+    //여러분들이 해결해 보세요, ( 이차원 배열인 aptBox 로부터 모든 요소의 border를 0으로 주기 )
+    for(var a=0;a<aptBox.length;a++){ //아파트 층수만큼
+        for(var i=0;i<aptBox[a].length;i++){//호수만큼
+            //aptBox[a] 은 lineBox를 이름대신 배열의 요소를 이용하여 가리키는 것!!
+            aptBox[a][i].style.border=border+"px solid red";
+        }
+    }
+}
+//녹화여부를 결정짓는 함수
+function setRecordFlag(){
+    //버튼의 시각적 처리 
+    document.getElementById("rec-bt").style.background=(recordFlag)? "none":"red";
+    recordFlag=!recordFlag; //버튼하나로 원터치로 감(즉 녹화중이면, 녹화중지하게, 녹화중지 상태면 녹화할수있도록..)
+}
+
+function printLog(){        //log div의 recordArray에 누적된 정보 출력하기
+    var str = "";       //정보를 누적할 변수
+
+    for(var i = 0; i <recordArray.length; i++){        //아파트 층수만큼 반복
+        var arr = recordArray[i];     //일차원 배열 즉 한 층이 반환!
+        str = str + arr[0] + "층, " + arr[1] + "호\n";
+    }    
+    log.innerText = str;    
+}
+
+function erase(){
+    //content의 div에 출력된 시각적 요소들을 싹~ 초기화
+    //각 rect에 적용된 빨간색상을 none으로 놓자!
+    //모든 사각형은 aptBox라는 아파트에 들어있음
+    for(var i = 0; i < aptBox.length; i++){ //층수만큼
+        for(var a = 0; a < aptBox[i].length; a++){
+            aptBox[i][a].style.background="none";
+        }
+    }
+}
+
+function recPlay(){
+    //녹화된 (recordArray에 녹화된) 사각형들의 배경색을 화면에 표시하자!
+    // for(var i = 0; i < recordArray.length; i++){     <- 얘는 너무 빨라서 사용하면 안됨!!
+        if(playFlag){   //44행의 interval 사용...
+
+            var dot = recordArray[index++]; //1차원 배열 반환 ( [x]와 [y]가 반환됨 ) ([x, y]형태를 띈 일차원 배열반환)  for문 없애서 i에서 index로 바꿈
+            var x = dot[0]; //접근할 층
+            var y = dot[1]; //접근할 호
+            aptBox[x][y].style.background = "red";
+            //index는 무작정 증가하면 안되고, 배열의 범위 내에서만 증가해야함!!!
+
+            if(index >= recordArray.length){        //0부터 시작 & index ++이라서 하나 올라가있는 상태, 그래서 >= 로 한다 >말고
+                //현재 함수 호출을 멈춰야 함!
+                playFlag = false;
+                index = 0;
+            }
+        }
+}
+
+function setPlayFlag(){
+    playFlag = true;
+
+
+}
+
+
+window.addEventListener("load", function(){
+    init();
+});
+</script>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="content"></div>
+        <div id="log"></div>
+    </div>
+    <button id="rec-bt" onClick="setRecordFlag()">Rec</button>
+    <button onclick="erase()">Erase</button>
+    <button onclick="setPlayFlag()">Play</button>       <!-- setInterval  있으니 recPlay()없앰-->
+    <button onClick="setFlag()">debug 모드</button>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>베네치아 타자게임 2단계</title>
+</head>
+<style>
+#wrapper{
+    width: 1200px;
+    height: 600px;
+    background-color: yellow;
+    margin: auto;
+    overflow: hidden;
+}
+#dashBoard{
+    float: left;
+    width: 200px;
+    height: 100%;
+    background-color: aquamarine;        
+}
+#dashBoard input{
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    background-color: dodgerblue;
+    width: 95%;
+}
+#content{
+    float: left;
+    width: 1000px;
+    height: 100%;
+    background-color: burlywood;       
+    position : relative;            /* 이거 없으면 단어가 너무 왼쪽으로 감 */
+}
+#hpBox{
+    width: 100%;
+    height: 190px;
+    /* background-color: gray; */
+    margin-top: 50px;
+    box-sizing: border-box;
+    padding: 4px 2px 2px 2px;       /* left top right bottom 순서 */
+}
+#scoreArea{
+    font-size: 60px;
+    font-weight: bold;
+    text-align: center;
+    margin-top : 100px;
+}
+</style>
+<script>
+var hpBox;
+var content;
+var scoreArea;
+var keyword;
+var span;       //제어할 단어 span
+var y = -8;     //단어의 초기 y축 위치
+var velY = 10;      //몇 발자국씩 내려올지, 속도를 결정하는 변수
+var score = 0;      // 점수를 누적시킬 전역변수
+
+function init(){
+    hpBox = document.getElementById("hpBox");
+    content = document.getElementById("content");
+    scoreArea = document.getElementById("scoreArea");
+    keyword = document.getElementById("keyword");
+
+    //한 단어를 입력 완료하는 시점! keyup
+    keyword.addEventListener("keyup", function(){
+        //엔터키를 누르면... 단어와 입력데이터와 비교!!
+        // console.log(event.keyCode);     //C대문자!!
+        
+        if(event.keyCode == 13){        //엔터를 쳤을 때만...
+            if(span.innerText == keyword.value){        //단어를 비교! ★★★  스팬 자체는 아니고 스팬에 있는 단어, 그리고 입력한 innerText말고 입력한 '값'을 비교
+                //span은 완전히 제거!
+                // 화면에 부착할 땐 appendChild이지만, 제거할 땐 removeChild ★★★
+
+                content.removeChild(span);      //화면에서 제거
+                keyword.value = "";         //텍스트 입력초기화!
+                score += 10;        //10누적
+                printScore();       //점수 출력
+            }
+        }
+    });
+}
+function createHp(){
+    //hp박스를 div로 생성해보자 (총 9개)
+    for(var i = 0; i < 9; i++){
+    var block = document.createElement("div");
+    block.style.width = 60 + "px";
+    block.style.height = 50 + "px";
+    block.style.backgroundColor = "red";
+    block.style.border = "1px solid gold";
+    block.style.borderRadius = "5px";
+    block.style.float = "left";
+    hpBox.appendChild(block);       //얘는 포지션 relative로 부착. 왜냐하면 좌표가 중요한 건 아니라서 & 하나씩 사라질 거니까.
+    }
+}
+
+//점수 출력을 전담하는 함수 정의
+function printScore(){
+    scoreArea.innerText = "0점"
+    scoreArea.innerText = score + "점";
+}
+
+//단어 생성하기~
+function createWord(){
+    //단어를 감싸게 될 요소의 선택 기준? 단어의 길이 만큼만 감쌀 수 있는 inline  방식 중 하나를 선택하자!
+    //span은 단지 감싸는게 목적, inline방식은 너비가 컨텐츠 만큼만 확보된다. (.wrapping or pack)
+    span = document.createElement("span");
+    span.innerText = "아무거나";
+    span.style.backgroundColor = "white";
+    span.style.position = "absolute";   /* content div를 기준으로 위치 지정할 예정 */
+    span.style.left = 100 +"px";
+    span.style.top = y +"px";
+    content.appendChild(span);      //화면에 부착! &span의 부모는 content가 됨
+    // return span;
+}
+
+function dropDown(){
+    y = y + velY;       //velY = 단어 내려오는 속도!
+    span.style.top = y + "px";
+}
+
+window.addEventListener("load", function(){
+    init();
+    createHp();
+    printScore();
+    createWord();
+    setInterval("dropDown()", 300);
+    keyword.focus();        //단어 치면 다시 커서가 올라가게
+
+});
+</script>
+<body>
+    <div id = "wrapper">
+        <div id="dashBoard">
+            <div id="hpBox"></div> <!-- 글씨를 여기에 써버리면 block이 relative라서 하나만 딱 위로 올라가고 그 오른쪽에 글씨, 나머지가 붙는 형식으로 돼버린다-->
+            <input type="text" placeholder="단어입력 할 곳" id="keyword">
+            <div id="scoreArea"></div>
+        </div>
+        <div id="content"></div>
+    </div>
+    
+</body>
+</html>
