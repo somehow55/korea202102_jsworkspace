@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            margin:auto;
+            width:1200px;
+            height:550px;       /* 여긴 wrapper부분의 사이즈, 프레임 사이즈를 지정 */
+            background: url(../images/bg.jpg);
+            background-size: 1200px 550px;      /* 여긴 그림 자체의 비율 사이즈를 조정 */
+            background-repeat: repeat-x;
+            position: relative;
+            overflow: hidden;
+        }
+        /* #mario{
+            width: 200px;
+            top:250px;
+            left: 50px;
+            position: absolute;  /*  이 position absolute를 넣어야 위치가 지정이 됨!  */
+     
+    </style>
+    <script>
+        var img;    //다른 함수에서도 접근이 가능하게 하려면 전역변수로 선언
+                        // 전역변수로 선언하면, 프로그램이 종료될 때까지 그 값을 사용할 수 있다.
+        var x = 0;  //프로그램이 끝날 때 까지 그 값이 10씩 누적되어 늘어나려면 전역변수로 선언
+        var y = 300;
+        var contatiner;     //div는 문자도 숫자도 논리값도 아닌 객체형이다! (추후에 배움)
+        var bgX=0;      //숫자값은 반드시 초기화 시켜야 함. 연산의 가능성이 높기 때문에. undefined는 null과 같아서 연산의 대상이 되지 않음..ㅠ
+
+        function init()
+        {
+            //우주선을 디자인적으로 생성시키지 말고, 프로그래밍적으로 생성해보자
+            //var img에서 그냥 img로 바꾸자! 전역변수 안되게
+            img = document.createElement("img");  //기존에 없었던 요소를 - 
+            img.src="../images/mario.png";
+            img.id = "mario"    // 프로그래밍적으로 id 부여!
+            img.style.width=100+"px";   //여기서 스타일도 지정하자!
+            img.style.position="absolute";             //포지션도 지정하자!
+            img.style.left=0+"px";      //여긴 자바스크립트 영역이니까 px는 문자처리 해야함
+            img.style.top=y+"px";       //여긴 200+px해도 되지만 더 자연스러운 무빙을 위해(?) y+px로 함
+
+
+            // document.getElementById();   이미 존재하는 거 가져올 때 씀.
+            container = document.getElementById("wrapper"); //이미 존재하는 거 가져올 때
+
+            //wrapper에 이미지를 자식 요소로 부착!!
+            container.appendChild(img);
+
+            //무한으로 moveBg() 호출
+            setInterval("moveBg()",10);     //실행부가 하나 별도로 존재하며, moveBg를 호출
+        }
+        function joystick(){
+            
+
+            //alert("눌렀어?")
+            //우주선을 x축방향으로 증가 (우측 이동효과)
+                  
+                    //사용자가 키보드를 입력할 때, 키보드의 각 영문철자
+                    //하나하나 마다, 1:1 대응하는 아스키 코드로 변환되어 컴퓨터에게 전달되어 지는데, 그 이유는
+                    //컴퓨터는 1과 0만을 이해하기 때문에 각 키보드의 영문철자 하나하나마다 이진수로 변환하기 위함...
+                    // 그럼, 개발자가 이 아스키 코드를 모두 암기해야 하는가?? NO.
+                    // 모든 프로그래밍 언어는 아스키코드를 반환하는 기능이 있다.
+                    console.log("당신이 누른 철자에 매칭되는 아스키 코드는 ", event.keyCode);       //keyCode로 C 대문자로 해야함!
+                
+                if(event.keyCode==39){
+                x+=10;      //전역변수에 10씩 누적!     //if문 안에 안 넣으면 다른 키 눌렀을 때의 값이 누적돼서 →눌렀을 때 한꺼번에 점프함 ㅠ
+                img.style.left= x+"px";}
+
+            //우주선을 y축방향으로 감소 (좌측 이동효과)
+            if(event.keyCode==37){
+                x-=10;
+                img.style.left= x+"px";}
+
+            //우주선을 x축방향으로 증가 (아래측 이동효과)
+            if(event.keyCode==40){
+                y+=10;
+                img.style.top= y+"px";}
+
+            //우주선을 y축방향으로 감소 (위쪽 이동효과)
+            if(event.keyCode==38){
+                y-=10;
+                img.style.top= y+"px";}
+        }
+            console.log("x, y= ", x, y);
+        //(컨테이너의) 배경이미지 (움직이게) 좌표 변경
+        function moveBg(){
+            //배경의 x좌표값을 프로그램이 끝날 때까지 계속 음수방향으로 누적되어야 하므로, 전역으로 선언. = bgX
+            // document.getElementById("wrapper");  라고 해도 되는데 얜 이미 위에 정해놨잖아? container
+            bgX--;      // bgX = bgX - 1
+            container.style.backgroundPosition=bgX + "px 0px";      //x축과 y축을 동시에 적는다
+
+            // // moveBg();   //속도를 늦추는 법 & 무한루프
+            // setTimeout("moveBg()",10);  //지정한 함수를 지정한 시간 뒤에 호출       1/1000초 단위까지 표현 가능
+        }
+
+            /*
+            set Interval(" ") 무한 호출
+            setTimeout(" ") 1회성 호출
+            이번 경우엔 moveBg안에서 moveBg 호출이라 무한으로 보이는 것.  = 무한루프 효과를 내려면 재귀호출로 이용한다.
+            */
+
+    </script>
+</head>
+<!-- 방법이 두 개 있음! 1. 문서의 내용이 다 읽혀졌을 때 호출되는 onLoad 이벤트 핸들러를 이용하는 방법 -->
+    <body onload='init();' onkeydown="joystick();">       <!-- moveBg();를 나중에 추가함. init에 이어지는 홑따옴표 안에 넣어!-->
+    <!-- <body onload='init();' onkeydown='alert(" \"나 눌렀어?\" "); init();'>   -->
+         <!-- "alert('문서내용 다 읽었어!'); init();" 라고 해도 됨. 홑따옴표! -->
+         <!-- 역슬래시 ( \ ) = 탈출부호
+                onload 때문에 탈출부호가 안 먹힘 ㅠ -->
+    <div id="wrapper"></div>
+    
+</body>
+</html>
+<script>
+    // 2. 옵션 : script 자체를 문서 제일 아래에 두는 방법
+  //  init(); //기존 함수 호출
+    // 이 방식이 더 깔끔하고 좋다!
+</script>

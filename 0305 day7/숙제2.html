@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+img{
+    position: absolute;
+    top: 50px;
+    left: 50px;
+}
+</style>
+<script>
+var flag=true;
+var x=50;
+function moveFunc(){
+    (flag)? x+=50:x-=50;
+    document.querySelector("img").style.left=x+"px";
+    document.querySelector("#txt").value=x;
+    ((x==500)||(x==50))? flag=!flag:0;
+}
+</script>
+</head>
+<body>
+    <button onClick="moveFunc()">move!</button>
+    X값<input type="parseInt" value=50 id="txt">
+    <img src="../images/0305 숙제/cookie.png" width="100px">
+</body>
+</html>

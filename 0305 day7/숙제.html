@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>" WHATTARI-GHATTARI "</title>
+    <style>
+        #cookie{
+            position: absolute;
+            left:0px;
+            top: 300px;
+            width: 200px;
+            display:inline-block;
+        }
+        #among{
+            left:0px;
+            margin:0px;
+            width:1200px;
+            height: 450px;
+        }
+      
+    </style>
+
+    <script>
+        var flag=true;
+        var x=0; 
+        function oomjic(){
+            (flag)? x+=30 : x-=30;
+            ((x>=750)||(x<=0))? flag=!flag:0;
+            //기존거에 추가!
+        document.querySelector("#sp").innerText="덕만까지... "+(760-x)+"보....";
+        document.querySelector("#cookie").style.left=x+"px";
+        document.querySelector("#txt").value=x;
+       }
+    </script>
+</head>
+<body>
+    <button onClick="oomjic()">클릭하면 이동!</button>
+    <input type="parseInt" value=0 id="txt">
+    <h1>☆온갖 밈이 난무한 현장★ 세인트릴리 쿠키는 과연 기억을 되찾을 수 있을지!<br>
+        <span id="sp"></span></h1>
+    <img id="cookie" src="../images/0305 숙제/cookie.png">
+    <img id="among" src="../images/0305 숙제/amongus.jpg">
+
+   
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품나열 with 이미지</title>
+    <style>
+        .wrapper{
+            margin:auto;
+            width:900px;
+            height:600px;
+            background-color: cadetblue;
+            overflow: hidden;
+        }
+        .leftSide{
+            width:150px;
+            height:100%;
+            background-color: aquamarine;
+            float: left;
+            overflow: hidden; /* 부모영역을 벗어나는 컨텐츠는 가리기 */
+        }
+        #content{
+            width:750px;
+            height:100%;
+            background-color: burlywood;
+            float:left;
+        }
+        img{
+            width:100px;
+        }
+    </style>
+    <script>
+        // function으로 showProduct 함수 정의
+        /* 함수 호출시, 문서내의 content 요소 안에 img 태그를 동적(runtime = 프로그램 실행 타임중에
+         컨텐츠를 변화시킬 수 있는 방법)으로 생성하여 자식 요소로 두기
+             정적 = 코드 원본을 만져서 변하게 하는 것 */
+      
+
+         var count=0;   //몇번째 클릭인지 알기 위한 카운터 변수. 1씩 증가하면 됨! & function 밖에 있어야 함
+
+         function showProduct(){
+            // document.querySelector는 문서내에 이미 존재할 때 가져오는 것 
+            // append : 추가하다
+           
+            //기존에 없던 태그를 프로그래밍 적으로 생성한다!
+            var img = document.createElement("img");   //태그 생성
+
+            ++count;
+            console.log("count 값은 ". count);
+
+        
+            img.src="../images/shopping list/shoes"+count+".png";
+
+            document.querySelector("#content").appendChild(img);
+
+
+            
+            
+            
+            //줄바꿈을 위해 태그 중 <br>을 동적으로 만들자!
+            var br = document.createElement("br");
+           // 여기 있던 document.querySelector("#content").appendChild(br); 이걸 밑의 counter 식의 'br추가'에 대입
+            
+
+            //count 값이 ex.3인 경우에만 appendChild() 부착하자!
+            //문서내의 txt라는 요소의 값을 구하자! = value...
+            var n = document.querySelector("#txt").value;   //코드가 길어서 변수로 받음
+
+            ((count%n)==0)? document.querySelector("#content").appendChild(br) : 0;
+
+        }
+    
+
+    </script> 
+</head>
+<body>
+    <div class="wrapper">
+        <div class="leftSide">
+            <input type="text" placeholder="how many per line?" id="txt">   <!-- placeholder는 힌트일 뿐이고 value는 입력을 미리 해둠.. -->
+
+            <button onclick="showProduct()">DISPLAY</button>
+        </div>
+
+        <div id="content">
+            <!-- <img src="../images/shopping list/shoes1.png" alt="">
+            <img src="../images/shopping list/shoes2.png" alt=""> -->
+        </div>
+
+    </div>
+</body>
+</html>

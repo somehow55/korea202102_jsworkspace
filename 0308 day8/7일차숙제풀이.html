@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #ball{
+            width:100px;
+            position: absolute;
+            left:0px;
+            top:150px;   
+        }
+    </style>
+    <script>
+        var x = 0;  //공의 좌표
+        var step=0; //증가할지 감소할지 결정할 변수
+        var flag=true;
+        var st;
+        function move(){
+            /* 문서내의 ball이라는 요소의 style 중 left값을 증가시키다가 500에 도달하면 감소시키고,
+            다시 0에 도달하면 증가시킨다 */
+            // document.querySelector()은 style시트의 것을 셀렉하는 방법
+            step = (flag)? 10 : -10;
+            // step = (x>=500)? -10 : 10; 이라고 하면, 500에서 한번 왼쪽으로 갔을 때 다시 오른쪽으로 가고 거기서 움짤돼버림..
+
+            
+            x = x+step;
+            document.getElementById("ball").style.left=x+"px";
+            document.querySelector("h1").innerText=x;
+
+
+
+
+            //개발자는 flag만 만지면, 공의 방향이 바뀔 수 있다!
+            flag = (x>=500 || x<=0)? !flag:flag;
+            // x==500, x==0으로 하지 않는 이유는, 딱 500과 0으로 떨어지지 않고 그 전후로 떨어지는 경우에 이 필터링이 먹히지 않기 때문이다!
+
+        }
+        function auto(){
+            //사용자 대신, 컴퓨터가 수동함수를 호출해주면 그게 자동이다!!
+            //따라서 언제나 수동로직을 먼저 만들어야 함!
+            st = setInterval("move()", 10);   //1/1000초 단위까지 표현가능
+        }
+        function stop(){
+            //setInterval을 멈추기 위해서는 clearInterval(현재 실행중인 Interval)을 이용
+            clearInterval(st);
+        }
+    </script>
+</head>
+<body>
+    <button onClick="move()">움직이기</button>
+    <button onclick="auto()">자동</button>
+    <button onclick="stop()">멈추거라</button>
+    <h1>0</h1>
+    <img id="ball" src="../images/ball.png" alt="">    
+</body>
+</html>

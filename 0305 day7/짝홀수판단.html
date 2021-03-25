@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>짝수 홀수 비교</title>
+</head>
+<body>
+    <h1>여기에 판단결과 나올 곳  </h1>
+     <!-- h1 = head 1번 = 제목 --> 
+    
+    <script>
+        // 함수를 실행할 땐 위에서 주로 한다. 함수가 없다면 밑에서 함. 트렌드는 </body> 앞에서 하는거... (ex. bootstrap, 편집기, jquery 오픈소스 등..)
+        
+        var msg="홀수";    //짝수, 홀수라는 문자열을 담게 될 변수
+        
+        // 프롬프트 창은 사용자가 입력한 데이터를 받아올 수 있다.
+        var result=prompt("원하시는 수를 입력하세요.");   //입력 메세지 창
+        // alert("당신이 입력한 값은 "+result);
+        
+        // 자바스크립트에는 isNan( =is Not a Number )함수가 있다 . 특별히!
+        // 숫자가 아니라 다른 걸 넣었을 때도 처리하려면?
+
+       var ans = (isNaN(result))? "숫자가 아닙니다":"";    //isNaN(데이터) is not a number, 즉 숫자가 아님을 true로 생각함.
+       alert(ans);
+       // ㅠㅠㅠ 그냥 if문 쓰자.....
+
+        // 참이면 짝수, 거짓이면 홀수 담기
+        msg=(result%2==0)? "짝수":"홀수"
+        document.querySelector("h1").innerText=result+"은(는)"+msg+"입니다"; 
+    </script>
+</body>
+</html>

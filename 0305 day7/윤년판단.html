@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>판단결과 나올 곳</h1>
+    <script>
+        var msg;
+        var result=prompt("연도를 입력하세요!");
+        msg=(result%4==0)? "윤년입니다":"윤년이 아닙니다"
+        document.querySelector("h1").innerText=result+"년은 "+msg;
+    </script>
+</body>
+</html>
