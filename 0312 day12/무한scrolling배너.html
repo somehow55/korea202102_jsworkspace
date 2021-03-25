@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+#banner-frame{
+    width: 415px;
+    height: 110px;
+    background-color: red;
+    margin: auto;
+    padding-top: 5px;
+    box-sizing: border-box;     /*padding, margin에 영향을 받지 않음 */     /* w3s에 CSS Box Sizing 쳐보면 알 수 있음 */
+    position : relative;        /* 자식 때문에... */
+
+}
+</style>
+<script>
+var bannerFrame; //모든 함수에서 접근하기 위해
+var gap = 5;    //이미지 간의 간격
+
+function init(){
+    bannerFrame=document.getElementById("banner-frame");
+    createProduct();
+}
+function createProduct(){
+    //액자 안에 제품 이미지 8개를 동적으로 생성하여 위치시켜본다!!
+    for(var i =1; i<=8; i++){
+    var img = document.createElement("img");// <img> 와 동일
+    img.src="../images/toy/"+i+".png"; //<img src=""> 와 동일
+    img.style.width=100+"px";
+    img.style.height=100+"px";
+    //아무것도 지정 안 함 = 디폴트 = relative
+    img.style.position = "absolute";
+    img.style.left = (100+gap)*(i-1)+"px";      //하나의 이미지가 차지하는 비율,x위치값 :"105*i와 비례해서 늘어나라~~" (100+gap)*(i-1)
+    
+    //배너에 이미지 부착
+    bannerFrame.appendChild(img);
+    }
+}
+//생성된 이미지들 움직이기
+function move(){
+    
+}
+window.addEventListener("load", function(){
+    init();
+});
+</script>
+</head>
+<body>
+    <div id="banner-frame"></div>
+</body>
+</html>

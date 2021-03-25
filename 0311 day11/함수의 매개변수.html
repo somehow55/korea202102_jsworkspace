@@ -1,0 +1,12 @@
+<script>
+    function dan(n,x){        //javascript는 함수의 매개변수(함수의 인수, 인자)는 var n하듯 선언하지 않는다. var 빼야함!
+        for(var i = 1; i <=x; i++){
+        document.write(n+"*"+i+"="+(n*i)+"<br>");
+        }
+    }
+
+    var d = prompt("원하는 단수를 입력하세요");
+    for(var a = 1; a<=d; a++){
+        dan(a,7);       //이러면 50단까지, 1~7을 곱한 값만 나옴
+    }
+</script>

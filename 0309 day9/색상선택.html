@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>색상선택_다중선택</title>
+    <script>
+        //이벤트 핸들러를 자바스크립트에서도 구현할 수 있다. 일단 암기...
+        window.addEventListener("load", function(){
+            init();            
+        });
+        // 익명함수들 중, 시스템에 의해 (주로 이벤트) 호출당하는 함수를 콜백(callback)함수라고 한다. 위는 콜백함수의 경우에 해당.
+        //= window가 보유하는 add event listener! body에 쓴 onload="init()"을 대신하기 위해 넣는것. 자바스크립트에서는 onload말고 load라고 한다.
+
+
+        function init(){
+            // alert("문서 로드했어!");
+            var result = prompt("원하시는 배경색을 선택하세요\n1(red) 2(orange) 3(yellow) 4(green) 5(blue) 6(navy) 7(purple)");
+            // \n은 줄바꿈 문자열. 문자열이므로 " "안에 넣어줘야 함.
+
+            //유저가 선택한 1~7 사이의 값을 하나씩 조건을 따져보고 알맞는 색상 문자열로 변환하자 = 가공하자
+            // 1=red, 2=orange, 3=yellow....
+
+            var color;
+            //굳이 하나하나 if로 하면 번호가 뒤로 갈 수록 위의 문장들이 실행돼버리는 시간낭비가 생긴다. 그걸 막기 위해서 하나에 하나만 되도록! else!
+           if(result==1){
+               color="red";
+            }else if(result==2){
+                color="orange";
+            }else if(result==3){
+                color="yellow";
+            }else if(result==4){
+                color="green";
+            }else if(result==5){
+                color="blue";
+            }else if(result==6){
+                color="navy";
+            }else if(result==7){
+                color="purple";
+            }else{
+                alert("1~7의 숫자로 쓰세요. '확인'을 누르시면 원래 화면으로 돌아갑니다.")
+                // 프롬프트 특성인가... function()을 넣어줘야 함. init()으로는 안되더라 ㅠ
+                // setTimeout(function(){
+                //     init()}
+                // ,1000);                              로 해도 되고,
+                setTimeout("init()",1000);      // 도 ok! " " 잊지 말자
+            }
+            
+            //이제 유저가 숫자를 고르면 바디 태그에 색이 뜨게 해야한다.
+            // document.querySelector("body");     라고 해도 되고,
+            // document.getElementById("");    해도는 되는데 바디태그에는 id를 잘 안준다.무의미. <= 바디는 원래 하나이기 때문에. 어차피 유일.
+            // 그러니까 document 다음에 body 넣어도 뜸!
+            document.body.style.background=color;
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

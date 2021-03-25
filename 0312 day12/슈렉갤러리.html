@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    .wrapper{
+        width: 500px;
+        height:400px;
+        margin: auto;
+        background-color: yellow;
+        position : relative;
+    }
+    #pframe{
+        width: 500px;
+        height: 340px;
+        background-color: coral;
+        overflow: hidden;
+        position : relative;
+    }
+    #container{
+        width: 3500px;
+        height: 340px;
+    }
+    
+    #container img{
+        float : left;
+    }
+    
+    #nav {
+        text-align: center;
+        font-size: 30px;
+    }
+    #nav a{
+        text-decoration: none;
+    }
+
+    #nav a:hover{
+    color: green;
+    }       /* 마우스 올려놓으면 color를 green으로 바꾸는 것 */
+
+    #nav a:active{      /* 누르고 있을 때 뜨는 색 지정 */
+    color: black;
+    }
+
+    #nav a:visited{      /* 한 번 방문 했던 것 색! */       /* 함수 호출이라 visited는 안 먹힘... */
+    color: whitesmoke;
+    }
+
+</style>
+<script>
+    // 포지션을 제어하기 위해, 문서로드와 동시에 container에 absolute 적용
+    // function 익명함수 뒤에 (), 그리고 꼭!!! {} 넣기
+    // 위에 absolute 넣을 수 있지만, 스타일주기가 편해서 script로 한다!
+    
+    var targetX;        //컨테이너의 x좌표를 담을 변수 (이미지 옮길 때 필요)
+    var container;              //모든 함수에서 접근하기 위해 전역변수 선언
+    var a=0.1;          // 비율계수 (이 숫자가 커질 수록 걸음이 커짐. .01~1 사이로 조절하기 )
+
+    function init(){
+        container = document.getElementById("container");
+        container.style.position = "absolute";
+        container.style.top=0+"px";     //좌우로 이미지가 움직이는거라 top은 0고정. 그래서 굳이 지정도 안 해도 됨. 만약 이미지를 위아래로 할거면 지정해야함.
+        container.style.left=0+"px";        //이미지가 왼쪽으로! 500가야하므로 -500!! 그리고 targetX로 변경, 그리고 초기화를 위해 0으로 변경
+        setInterval("move()", 10);     //83행 말고 여기에 최초의 한 번만 하면 됨.
+    }
+        //갤러리의 container 이동시키기
+    function move(){       //x가 0, -500, -1000...가 되게
+        container.style.left = parseFloat(container.style.left) + a*(targetX - parseFloat(container.style.left)) + "px";      //parseInt는 정수라서 틈이 생김. parseFloat는 실수라서 정교.
+    }
+    function setTarget(x){
+        targetX = x;        //새로운 목표지점 생성!
+    }
+
+    window.addEventListener("load", function(){
+        init();
+    });
+</script>
+</head>
+<body>
+<div class= "wrapper">
+    <div id="pframe">
+    <!-- 아래는 기다란 사진을 모아놓은 컨테이너! -->
+        <div id="container">
+            <img src="../images/shrek/img0.jpg">
+            <img src="../images/shrek/img1.jpg">
+            <img src="../images/shrek/img2.jpg">
+            <img src="../images/shrek/img3.jpg">
+            <img src="../images/shrek/img4.jpg">
+            <img src="../images/shrek/img5.jpg">
+            <img src="../images/shrek/img6.jpg">
+        </div>
+    </div>
+    <div id="nav">
+        <!-- onclick을 href로 변경 => move(0)등을 링크로 생각해서 파일이 안 뜸. 그래서 javascript:라고 붙여주기! -->
+        <!-- html문서에 자바스크립트를 작성할 수 있는 영역은?
+            1) script 영역
+            2) 이벤트 핸들러 안
+            3) a href 안에도 가능(javascript: 를 꼭 명시)
+        -->
+        <a href="javascript:setTarget(0);">●</a>
+        <a href="javascript:setTarget(-500);">●</a>
+        <a href="javascript:setTarget(-1000);">●</a>
+        <a href="javascript:setTarget(-1500);">●</a>
+        <a href="javascript:setTarget(-2000);">●</a>
+        <a href="javascript:setTarget(-2500);">●</a>
+        <a href="javascript:setTarget(-3000);">●</a>
+    </div>
+    <!-- ctrl + h = 찾아서 바꾸기 기능! -->
+</div>
+</body>
+</html>

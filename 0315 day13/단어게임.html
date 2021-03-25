@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .wrapper{
+            width: 500px;
+            height: 700px;
+            background-color: deeppink;
+            margin: auto;
+        }
+        #word-area{
+            width: 100%;
+            height: 200px;
+            background-color: cyan;
+            font-size: 90px;
+            text-align: center;
+        }
+        #input-area{
+            height: 150px;
+        }
+        #input-area input{
+            width: 98.5%;
+            height: 100%;
+            background-color: dimgrey;
+            color: white;
+            font-weight: bold;
+            font-size: 85px;
+            text-align: center;
+        }
+        #feedback-area{
+            width: 100%;
+            height: 200px;
+            color: whitesmoke;
+            font-weight: bold;
+            font-size: 180px;
+            text-align: center;
+            background-color: greenyellow;
+        }
+        #score-area{
+            font-size: 130px;
+            height: 150px;
+            font-weight: bold;
+            color: indigo;
+            text-align: center;
+        }
+    </style>
+    <script>
+        var wordArea;
+        var inputArea;
+        var feedbackArea;
+        var scoreArea;
+        var msg;
+        var index = 0;      //배열을 접근할 때 사용할 인덱스 변수!
+        var score = 0;
+        //다른 함수에서 접근할 예정인 것들이니 미리 전역변수로 해놓으면 편함!
+
+        //데이터를 배열화 시키면 순서가 생긴다. 따라서 게임 시 '다음 단어'라는 개념이 생긴다.
+        var word=[
+            "가위",
+            "나훈아",
+            "다람이",
+            // "라미네이트",
+            // "마비노기",
+            // "바지락칼국수",
+            // "사귀자 우리",
+            // "아니 싫어",
+            // "자기야",
+            // "차카게 살게",
+            // "카페인",
+            // "타이페이",
+            // "파렴치",
+            // "하경"
+        ];
+        function enter(){       //enter 쳤을 때만 코드가 수행되게 하려면? 조건을 줘야함
+            //아스키 코드 찾는 방법 : alert(event.keyCode);
+            if(event.keyCode==13){
+                if(msg.value==""){
+                    alert("단어를 입력해야지");
+                }else if(event.keyCode==13){      //엔터 쳤을 때만 반응하게
+                // alert("키 잘 입력했지?");
+                
+                // 아래의 코드는 아무때나 실행되면 안됨! 단어를 알맞게 넣었을 때만 실행해야함
+                    if(wordArea.innerText==msg.value){  //wordArea의 텍스트가 msg와 같을 때만 index를 넘기자!
+                        index++;
+                        printWord();
+                        feedbackArea.innerText="O";
+                        score = scoreArea.innerText=10*(index);
+                        //↑ 맞았을 경우의 피드백
+                   }else{   //틀린 경우의 피드백
+                       feedbackArea.innerText="X";
+                   }
+                msg.value="";        //일치한 경우, 이미 입력한 텍스트는 초기화 되게
+                if(scoreArea.innerText==30){
+                   alert("축하합니다, 다 맞았습니다");
+                   wordArea.innerText="끝!";
+                }   
+                }
+            }
+        }
+        function init(){        // 프로그램 가동과 동시에 무언가 할 작업(초기화)이 있다면 여기서 처리한다!
+            wordArea=document.getElementById("word-area");
+            inputArea=document.getElementById("input-area");
+            msg=document.getElementById("msg");
+            feedbackArea=document.getElementById("feedback-area");
+            scoreArea=document.getElementById("score-area");
+        }
+
+        function printWord(){       //유저가 따라치게 될 메세지 출력하는 함수
+            wordArea.innerText=word[index];
+        }
+        window.addEventListener("load", function(){
+            init();
+            printWord();
+            // 프로그램 가동과 동시에 커서 텍스트 박스에 위치시키기↓
+            msg.focus();        //html실행과 동시에 커서 올리기
+        });
+    </script>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="word-area">단어 출력</div>
+        <div id="input-area">
+            <input type="text" placeholder="단어입력" id="msg" onkeyup="enter()"></div>
+        <div id="feedback-area"></div>
+        <div id="score-area"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스탑워치</title>
+<style>
+    #wrapper{
+        margin: auto;
+        width: 600px;
+        border: 3px solid crimson;
+        padding: 50px;
+        top: 100px;
+        left: 300px;
+        position: absolute;
+    }
+    #wrapper input{
+        font-size: 120px;
+        width: 150px;
+        text-align: right;  /* 우측정렬 */
+    }
+    #wrapper button{
+        padding: 5px 10px;
+        border: 2px solid orangered;
+        background-color: white;
+        border-radius: 12px;
+        transition-duration: 0.2s;
+    }
+    #wrapper button:hover{
+        background-color: orangered;
+        color: whitesmoke;
+    }
+    #buttons{
+        text-align: center;
+    }
+</style>
+<script>
+    var t_min;      //얘네는 숫자 자체가 아니라 input박스이므로 숫자 초기화 안 함.
+    var t_sec;
+    var t_hour;
+
+    var sec = 0;        //초를 담을 전역변수 (숫자이므로 초기화 하자
+    var min = 0;        //분을 담을 전역변수 (숫자이므로 - )
+    var hour = 0;
+
+    var timeUp;
+
+    //0에 대한 처리를 해주는 함수
+    function getZeroString(n){      //이 함수를 호출하는 자가 n에 숫자를 넘기되, 10보다 작으면 0(문자)을 추가하고, 아니면 숫자만 반환하자
+        var result;
+        if(n<10){       // 10보다 작니?
+            result = "0" + n;
+        }else{
+            result = parseInt(n);       //parseInt를 해야함 ㅠㅠㅠㅠㅠㅠ 잊지 말자
+        }
+        return result;
+    }
+    
+    function init(){
+        t_min = document.getElementById("t_min");
+        t_sec = document.getElementById("t_sec");
+        t_hour = document.getElementById("t_hour");
+            //분과 초를 0으로 초기화
+            t_min.value="0"+0;
+            t_sec.value="0"+0;
+            t_hour.value="0"+0;
+    }
+    
+    function countUp(){     //if, else 안 넣으면 초랑 분이랑 같이 올라간다.
+        // 초를 증가시키는 함수        ↓이건 내가 혼자 해본거./.... 실패
+        // if(sec!=60){
+        // sec++;   
+        // t_sec.value = sec;
+        // }else if(sec>=60){
+        // min++;
+        // t_min.value = min;     // = 증가변수!!
+        // sec = 0;        //이걸 꼭 넣어야 초가 0이 된다.
+        // }
+            sec++;
+            // 따라서 문자 취급해서 출력해야함...
+            if(sec==60){
+                sec = 0;
+                min++;
+            }else if(min==60){
+                min = 0;
+                hour++;
+            }
+            t_sec.value = getZeroString(sec);      //초에 출력될 데이터가 10보다 작은 경우엔 앞에 0을 붙여야 한다.
+            t_min.value = getZeroString(min);      //보여지는 text(t_min.value)에 메모리에서 계산한 min을 대입
+            // 이걸로 00을 만들려면, sec이 0이 되어야 하는데, 그건 if문 안에 있는 부분! (60이 0이 되는 것) 그래서 if else 다음에 써야 함!!!!
+            t_hour.value = getZeroString(hour);
+    }
+
+    function auto(){
+        timeUp = setInterval("countUp()", 1000);}
+
+    function pause(){
+        clearInterval(timeUp);      // 실행중인 setInterval을 멈추려면 불러와야 함. 그러려면 전역 변수로 선언하고 그걸 여기에 넣기
+    }
+    function reset(){
+        clearInterval(timeUp);
+        // 해도 되고 pause(); 해도 됨
+        sec = 0;
+        min = 0;
+        hour = 0;
+        init();
+    }
+        
+
+    window.addEventListener("load", function(){     //addEventListener = body를 불러온다
+        init();
+    });
+
+</script>
+</head>
+<body>
+<div id="wrapper">
+    <input type="text" id = "t_hour">시간
+    <input type="text" id = "t_min">분     <!--  여기에 있던 value = "00"을 위에 스크립트영역에 value로 넣음-->
+    <input type="text" id = "t_sec">초
+    <p>
+    <div id="buttons">
+        <button onclick="countUp()">manual</button>    
+        <button onclick="auto()">auto</button>
+        <button onclick="pause()">pause</button>
+        <button type="reset" onclick="reset()">reset!</button>
+    </div>
+</div>
+
+</body>
+</html>

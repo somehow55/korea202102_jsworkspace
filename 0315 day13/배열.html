@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>드디어 배열 배운다</title>
+    <style>
+
+    </style>
+    <script>
+        /* 과일명 10개를 메모리에 올려보자 (기존의 변수 사용법으로....) */
+        // var a= "사과";
+        // var b = "딸기";
+        // var c = "청포도";
+        // var d = "망고스틴";
+        // var e = "용과";
+        // var f = "두리안";
+        // var g = "망고";
+        // var h = "포도";
+        // var i = "오렌지";
+        // var j = "석류";
+        //document.write로 과일들을 출력하기
+        // var fruit = document.write(a+b+c+d+e+f+g+h+i+j);
+        /* 데이터에 대해 일일이 변수명을 할당하는 방식은, 대량의 데이터를 처리할 때는 비효율적.
+                해결책은?   현실에서 줄을 세워서 업무를 처리하면 각 주체의 이름을 알 필요 없이 위치로 지정 가능하듯,
+                전산에서도 메모리에 데이터를 올릴 때 줄을 세워 올리는 기법이 지원된다.
+                이것을 '배열'이라고 한다. (array)
+         */
+
+        // 동물이름 10개를 메모리에 올리되, 순서를 맞춰 올리기
+        var animal = new Array();   //배열 선언! 즉 집합을 선언하는 것
+        animal[0]="쥐";
+        animal[1]="소";
+        animal[2]="호랑이";
+        animal[3]="토끼";
+        animal[4]="용";
+        animal[5]="뱀";
+        animal[6]="말";
+        animal[7]="양";
+        animal[8]="원숭이";
+        animal[9]="닭";
+        animal[10]="개";
+        animal[11]="돼지";
+        animal[12]="고양이";
+        
+        for(var i=0; i<=12; i++){
+            document.write(animal[i]+"<br>")
+        }
+
+        //변수를 출력문 앞에 입력해야한다.
+
+
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
